@@ -1,3 +1,8 @@
+"""
+Enums.
+
+Platforme users role enumeration.
+"""
 import enum
 
 
@@ -23,6 +28,7 @@ class RoleEnum(str, enum.Enum):
 
     @classmethod
     def get_list_primary(cls) -> list["RoleEnum"]:
+        """Get the list of primary users."""
         return [
             cls.ADMIN1,
             cls.INSP1,

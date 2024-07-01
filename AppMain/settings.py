@@ -23,13 +23,8 @@ import os
 import pathlib
 import typing
 
-import jinja2
 import pydantic_settings
-import sentry_sdk
-from fastapi.templating import Jinja2Templates
-from sentry_sdk.integrations.fastapi import FastApiIntegration
-from sentry_sdk.integrations.logging import LoggingIntegration
-from sentry_sdk.integrations.starlette import StarletteIntegration
+from pydantic import Field
 
 from sap.settings import DatabaseParams
 
@@ -63,16 +58,12 @@ class _Settings(pydantic_settings.BaseSettings):
     FRONTEND_URL: str = "http://localhost:8000/"
 
     # Databases
-    MONGO: DatabaseParams
-
-    # Tokens
-    CRYPTO_SECRET: str  # a key used for encryption
+    MONGO: DatabaseParams = Field(default_factory=DatabaseParams)
 
     # Email
 
     # Other
     TEST_ENV: str = os.getenv("TEST_ENV", "NONE")
-
 
     @property
     def is_dev(self) -> bool:
@@ -136,7 +127,11 @@ def logging_setter() -> dict[str, typing.Any]:
                 "handlers": ["file_access"],
                 "propagate": False,
             },
-            "sap": {"level": "DEBUG", "handlers": ["console", "file"], "propagate": False},
+            "sap": {
+                "level": "DEBUG",
+                "handlers": ["console", "file"],
+                "propagate": False,
+            },
         },
     }
 

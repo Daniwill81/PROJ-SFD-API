@@ -14,7 +14,6 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from sap.beanie.client import BeanieClient
 
 from app import controllers
-from app.models import Invoice, Trip
 from AppMain.asgi import initialize_beanie
 
 

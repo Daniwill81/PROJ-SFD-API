@@ -1,5 +1,5 @@
 """
-AppMain.
+Serializer.
 
-This package contains configuration for the project.
+Serialize python object in Json.
 """

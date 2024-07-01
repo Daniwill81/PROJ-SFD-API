@@ -3,8 +3,8 @@
 
 Models define logical structuring of the data in the database.
 """
-from .roledesc import RoleDesc
-from .user import User
+from app.models.utils.roledesc import RoleDesc
+from app.models.utils.user import User
 
 __all__ = [
     "RoleDesc",

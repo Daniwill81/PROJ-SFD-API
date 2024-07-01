@@ -34,12 +34,12 @@ class User(PasswordMixin, Document):
     api_key: str | None = None
 
     def __str__(self) -> str:
+        """Format user name."""
         return f"l'utilisateur {self.first_name} {self.last_name.upper()}"
 
     def get_name(self) -> str:
         """Get full name of the user."""
         return f"{self.first_name} {self.last_name}"
-
 
     async def generate_auth_key(self) -> None:
         """Generate a random string for auth token."""
@@ -57,7 +57,6 @@ class User(PasswordMixin, Document):
                 {User.email: email},
             )
         )
-
 
     class Settings:
         """Settings for the database collection."""

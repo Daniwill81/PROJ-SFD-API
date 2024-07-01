@@ -10,26 +10,21 @@ import logging
 import typing
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import FastAPI, Request
 from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, Response
-from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import JSONResponse
-from starlette.routing import Mount
-from starlette.staticfiles import StaticFiles
 
 from sap.beanie.client import BeanieClient
-from sap.fastapi import Flash, FlashLevel
 from sap.fastapi.middleware import InitBeanieMiddleware  # , LogServerErrorMiddleware
 
 from app import models
-from app.middleware import InitGlobalParamsMiddleware, InitJinjaGlobalsMiddleware
-from app.views import router_pages
-from app.webapi import router_api
 
 from .settings import AppSettings, logger
+
+# from app.webapi import router_api
 
 
 @asynccontextmanager
@@ -46,13 +41,22 @@ app = FastAPI(docs_url=None, redoc_url=None, title=AppSettings.PROJ_NAME)
 
 # Enable cors
 app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Mount RESTFul API
-app_api = FastAPI(docs_url=None, redoc_url="/doc", title=AppSettings.PROJ_NAME, description="sfd project API")
-app_api.include_router(router_api)
-app.routes.append(Mount(path="/api/", app=app_api, name="api"))
+# app_api = FastAPI(
+#    docs_url=None,
+#    redoc_url="/doc",
+#    title=AppSettings.PROJ_NAME,
+#    description="sfd project API",
+# )
+# app_api.include_router(router_api)
+# app.routes.append(Mount(path="/api/", app=app_api, name="api"))
 
 # Load sub-apps routes and documents
 document_models = []
@@ -63,10 +67,11 @@ for model_name in models.__all__:
 
 
 # Register middleware
-app.add_middleware(InitBeanieMiddleware, mongo_params=AppSettings.MONGO, document_models=document_models)
-app.add_middleware(InitGlobalParamsMiddleware)
-app_pages.add_middleware(SessionMiddleware, session_cookie="starlette", secret_key=AppSettings.CRYPTO_SECRET)
-app_pages.add_middleware(InitJinjaGlobalsMiddleware)
+app.add_middleware(
+    InitBeanieMiddleware,
+    mongo_params=AppSettings.MONGO,
+    document_models=document_models,
+)
 
 
 # Events to run on startups
@@ -95,7 +100,3 @@ async def update_uvicorn_logger() -> None:
 async def api_doc_redirect(request: Request) -> Response:
     """Home page."""
     return RedirectResponse("/api/doc")
-
-
-# Filter out /health
-logging.getLogger("uvicorn.access").addFilter(UvicornAccessLogFilter())

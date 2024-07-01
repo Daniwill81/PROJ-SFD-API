@@ -8,15 +8,12 @@ import datetime
 import typing
 
 import pydantic
-from pydantic import Field
 
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
-from sap.fastapi.auth import JWTAuth
 
-from app.models.utils.user import User
-from app.models.utils.roledesc import RoleDesc
 from app.models.enums import RoleEnum
-from app.xlib.utils import get_frontend_url
+from app.models.utils.roledesc import RoleDesc
+from app.models.utils.user import User
 
 
 class UserSerializer(ObjectSerializer[User]):
@@ -60,25 +57,16 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
         """Set user role."""
         self.role = self.instance.role if self.instance else None
 
-##########################################################################################################
-    async def create(self, **kwargs: typing.Any) -> User:
-        """Create the object in the database using the data extracted by the serializer."""
-        assert self.roledesc
-        request_user: User = kwargs["request_user"]
-        is_primary = bool(request_user.role)
-
-        self.role = self.organization.get_role(is_primary=is_primary)
-        assert self.role, "Role not provided"
-        campaign = Campaign.get_default() if self.role in [RoleEnum.SA1, RoleEnum.SA2] else None
-        self.instance = await User(**self.model_dump(), is_primary=is_primary, campaign=campaign).create()
-        assert self.instance.role, "Role not set"
-        return self.instance
-###########################################################################################################
+    # async def create(self, **kwargs: typing.Any) -> User:
 
     async def update(self, **kwargs: typing.Any) -> User:
         """Update the object in the database using the data extracted by the serializer."""
         assert self.instance
-        data_to_update = {"first_name": self.first_name, "last_name": self.last_name, "email": self.email}
+        data_to_update = {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+        }
         instance: User = self.instance.model_copy(update=data_to_update)
         await instance.save()
         self.instance = instance

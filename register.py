@@ -13,7 +13,7 @@ from sap.beanie import Document
 from sap.beanie.exceptions import Object404Error
 
 from app.models import RoleDesc, User
-from app.models.enums import RoleTypeEnum, RoleEnum
+from app.models.enums import RoleEnum, RoleTypeEnum
 from AppMain.asgi import initialize_beanie
 from AppMain.settings import AppSettings, logger
 
@@ -32,8 +32,13 @@ async def register_data(doc_model: type[Document], data_list: list[dict[str, typ
     """Populate database with default data."""
     for data_row in data_list:
         logger.debug("Loading data for %s: %s", doc_model.__name__, data_row[pk_name])
-        instance = instance.copy(update=data_row)
-        await instance.save()
+        try:
+            instance = await doc_model.find_one_or_404(getattr(doc_model, pk_name) == data_row[pk_name])
+        except Object404Error:
+            await doc_model(**data_row).create()
+        else:
+            instance = instance.copy(update=data_row)
+            await instance.save()
 
 
 async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
@@ -55,9 +60,9 @@ async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
             roledesc=user_role,
         ).create()
 
-        #if AppSettings.APP_ENV == "DEV":
-            #user.set_password("12345")
-            #await user.save()
+        # if AppSettings.APP_ENV == "DEV":
+        # user.set_password("12345")
+        # await user.save()
 
         assert user.id
         print(f"Admin {user.email} was successfully created.")

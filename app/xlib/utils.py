@@ -10,7 +10,7 @@ from AppMain.settings import AppSettings
 
 
 def get_frontend_url(path: str) -> str:
-    """Return the path of an url in the frontend interface"""
+    """Return the path of an url in the frontend interface."""
     return urllib.parse.urljoin(AppSettings.FRONTEND_URL, path)
 
 

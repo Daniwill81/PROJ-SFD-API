@@ -7,9 +7,9 @@ Organization is useful in defining the role of each user.
 """
 import pymongo
 
-from sap.beanie import Document, Link
+from sap.beanie import Document
 
-from app.models.enums import RoleTypeEnum, RoleEnum
+from app.models.enums import RoleEnum, RoleTypeEnum
 
 
 class RoleDesc(Document):
@@ -22,7 +22,6 @@ class RoleDesc(Document):
     name: str
     acronym: str
     type: RoleTypeEnum
-
 
     def get_acronym(self) -> str:
         """Return the acronym."""
@@ -38,7 +37,6 @@ class RoleDesc(Document):
 
         return RoleEnum[code]
 
-
     class Settings:
         """Settings for the database collection."""
 
@@ -49,7 +47,11 @@ class RoleDesc(Document):
             #
             # Ensure that there is no duplicate for Govs institutions
             # only check uniqueness when non null
-            pymongo.IndexModel("acronym", unique=True, partialFilterExpression={"acronym": {"$type": "string"}}),
+            pymongo.IndexModel(
+                "acronym",
+                unique=True,
+                partialFilterExpression={"acronym": {"$type": "string"}},
+            ),
             pymongo.IndexModel(
                 [
                     ("name", pymongo.TEXT),

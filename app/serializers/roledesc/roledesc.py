@@ -17,4 +17,3 @@ class RoleDescSerializer(ObjectSerializer[RoleDesc]):
     name: str
     acronym: str
     created: datetime.datetime
-

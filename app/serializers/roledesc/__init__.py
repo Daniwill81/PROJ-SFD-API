@@ -1,7 +1,4 @@
-"""
-Agency Serializer.
-
-"""
+"""Agency Serializer."""
 from .roledesc import RoleDescSerializer
 
 __all__ = [
