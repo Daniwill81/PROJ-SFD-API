@@ -1,0 +1,31 @@
+# Dependencies
+# ------------
+# Add here the list of packages that need to be install to run the app.
+# This list is to be updated manually as new packages are added to the project.
+# Do not use an automated to freeze local dependencies.
+# For convenience dev dependencies are in the file: requirements-dev.txt
+
+# Package installer
+pip==23.1
+
+# Async packages
+httpx==0.23.3
+aiodns==3.0.0
+aiofiles==22.1.0
+
+# Databases: MongoDB
+beanie==1.18.0
+motor==3.1.1
+
+# Web Framework: FastAPI
+pydantic[email,dotenv]==1.10.9
+python-multipart==0.0.5
+uvicorn==0.20.0
+fastapi==0.92.0
+PyJWT==2.6.0
+itsdangerous==2.1.2
+
+# Utils
+requests==2.28.2
+sentry-sdk[fastapi]==1.14.0
+sapx==0.1.17
