@@ -1,13 +1,13 @@
 rolesdesc:
   - acronym: ADMIN
-    name: Administrateur SFD gestionnnaire de la plateforme
+    name: Administrateur SFD gestionnaire de la plateforme
     type: ADMIN
   - acronym: INSP
     name: Inspecteur SFD
-    type: INSPECTEUR
+    type: INSP
 
 superusers:
   - first_name: Admin
     last_name: Plateforme
     email: danielamagbegnon24@gmail.com
-    pasword: SFD-2024
+    password: SFD-2024

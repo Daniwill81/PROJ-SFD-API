@@ -1,9 +1,3 @@
-"""
-Register metadata to run the Application.
-
-Data is loading from metadata.yaml
-"""
-
 import asyncio
 import typing
 
@@ -15,7 +9,7 @@ from sap.beanie.exceptions import Object404Error
 from app.models import RoleDesc, User
 from app.models.enums import RoleEnum, RoleTypeEnum
 from AppMain.asgi import initialize_beanie
-from AppMain.settings import AppSettings, logger
+from AppMain.settings import logger  # AppSettings
 
 
 async def register() -> None:
@@ -25,6 +19,7 @@ async def register() -> None:
     with open("metadata.yml", "r", encoding="utf-8") as stream:
         metadata: dict[str, typing.Any] = yaml.safe_load(stream)
 
+    await register_roledescs(metadata["rolesdesc"])
     await register_superusers(data_list=metadata["superusers"])
 
 
@@ -37,8 +32,13 @@ async def register_data(doc_model: type[Document], data_list: list[dict[str, typ
         except Object404Error:
             await doc_model(**data_row).create()
         else:
-            instance = instance.copy(update=data_row)
+            instance = instance.model_copy(update=data_row)
             await instance.save()
+
+
+async def register_roledescs(data_list: list[dict[str, typing.Any]]) -> None:
+    """Register roles described in metadata."""
+    await register_data(RoleDesc, data_list, "type")
 
 
 async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
@@ -59,10 +59,6 @@ async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
             role=RoleEnum.ADMIN1,
             roledesc=user_role,
         ).create()
-
-        # if AppSettings.APP_ENV == "DEV":
-        # user.set_password("12345")
-        # await user.save()
 
         assert user.id
         print(f"Admin {user.email} was successfully created.")
