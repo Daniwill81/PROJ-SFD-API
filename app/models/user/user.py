@@ -41,6 +41,16 @@ class User(PasswordMixin, Document):
         """Get full name of the user."""
         return f"{self.first_name} {self.last_name}"
 
+    """def has_perm(self, perm: typing.Union[str, RoleEnum]) -> str:
+        Check if the user has access to a specific role permission.
+        if perm == "*" and self.role:
+            self.role = perm
+            return self.role == perm"""
+
+    """def has_perms(self, perms: typing.Union[list[str], list[RoleEnum]]) -> str:
+        Check if the user has access to any of the provided permissions.
+        return any(self.has_perm(perm) for perm in perms)"""
+
     async def generate_auth_key(self) -> None:
         """Generate a random string for auth token."""
         await self.set({"auth_key": passlib.pwd.genword(length=32, charset="ascii_62")})
@@ -51,7 +61,7 @@ class User(PasswordMixin, Document):
 
     @classmethod
     async def find_current(cls, email: str) -> typing.Self | None:
-        """Retrieve user valid according to campaign."""
+        """Retrieve user valid according to email."""
         return await User.find_one(
             operators.And(
                 {User.email: email},

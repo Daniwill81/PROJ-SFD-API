@@ -33,10 +33,3 @@ class RoleEnum(str, enum.Enum):
             cls.ADMIN1,
             cls.INSP1,
         ]
-
-
-class SexEnum(str, enum.Enum):
-    """The sex of the person."""
-
-    M = "M"  # Male
-    F = "F"  # Female

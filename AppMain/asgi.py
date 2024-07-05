@@ -16,11 +16,13 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, Response
 from starlette.responses import JSONResponse
+from starlette.routing import Mount
 
 from sap.beanie.client import BeanieClient
 from sap.fastapi.middleware import InitBeanieMiddleware  # , LogServerErrorMiddleware
 
 from app import models
+from app.webapi import router_api
 
 from .settings import AppSettings, logger
 
@@ -49,14 +51,14 @@ app.add_middleware(
 )
 
 # Mount RESTFul API
-# app_api = FastAPI(
-#    docs_url=None,
-#    redoc_url="/doc",
-#    title=AppSettings.PROJ_NAME,
-#    description="sfd project API",
-# )
-# app_api.include_router(router_api)
-# app.routes.append(Mount(path="/api/", app=app_api, name="api"))
+app_api = FastAPI(
+    docs_url=None,
+    redoc_url="/doc",
+    title=AppSettings.PROJ_NAME,
+    description="sfd project API",
+)
+app_api.include_router(router_api)
+app.routes.append(Mount(path="/api/", app=app_api, name="api"))
 
 # Load sub-apps routes and documents
 document_models = []

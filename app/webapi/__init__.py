@@ -1,1 +1,18 @@
-"""API endpoints."""
+"""
+AppMain.
+
+This package contains configuration for the project.
+The `router` list routes URLS to any accessible endpoint for a app.
+The router in routes.py is referred as the main router for this app.
+"""
+
+
+from fastapi import APIRouter
+
+from .auth import router as router_auth
+from .user import router as router_user
+
+router_api = APIRouter(redirect_slashes=True)
+
+router_api.include_router(router_auth, prefix="/auth", tags=["auth"])
+router_api.include_router(router_user, prefix="/user", tags=["user"])

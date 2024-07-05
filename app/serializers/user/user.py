@@ -12,8 +12,8 @@ import pydantic
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
 from app.models.enums import RoleEnum
-from app.models.utils.roledesc import RoleDesc
-from app.models.utils.user import User
+from app.models.user.roledesc import RoleDesc
+from app.models.user.user import User
 
 
 class UserSerializer(ObjectSerializer[User]):
@@ -33,8 +33,9 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
     first_name: str
     last_name: str
     email: pydantic.EmailStr
-    roledesc: RoleDesc | None = None
-    role: RoleEnum | None = None
+    password: str
+    roledesc: RoleDesc
+    role: RoleEnum
 
     # The fields bellow are not serialized
     instance: User | None = None
@@ -55,9 +56,23 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
 
     async def validate_role(self) -> None:
         """Set user role."""
-        self.role = self.instance.role if self.instance else None
+        if self.instance and self.role == self.instance.role:
+            return
 
-    # async def create(self, **kwargs: typing.Any) -> User:
+    async def create(self, **kwargs: typing.Any) -> User:
+        """Create users."""
+        # await self.run_async_validators(**kwargs)
+        user = User(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            email=self.email,
+            password=self.password,
+            roledesc=self.roledesc,
+            role=self.role,
+        )
+        await user.create()
+        self.instance = user
+        return user
 
     async def update(self, **kwargs: typing.Any) -> User:
         """Update the object in the database using the data extracted by the serializer."""

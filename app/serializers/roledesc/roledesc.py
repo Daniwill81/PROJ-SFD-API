@@ -7,7 +7,7 @@ import datetime
 
 from sap.fastapi import ObjectSerializer
 
-from app.models.utils.roledesc import RoleDesc
+from app.models.user.roledesc import RoleDesc
 
 
 class RoleDescSerializer(ObjectSerializer[RoleDesc]):

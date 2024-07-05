@@ -1,3 +1,8 @@
+"""
+Register metadata to run the Application.
+
+Data is loading from metadata.yaml
+"""
 import asyncio
 import typing
 
