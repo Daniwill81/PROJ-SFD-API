@@ -74,6 +74,7 @@ python main.py
 ```
 
 - Visit: http://127.0.0.1:8000/ to view the application running in your browser
+- Visit: http://127.0.0.1:8000/api/doc to view API doc in your browser
 
 
 ## 🖌 Formatting

@@ -52,15 +52,17 @@ class LoginAuthSerializer(WriteObjectSerializer[User]):
 
     async def verify_email_password(self) -> bool:
         """Check that the email exists in the DB."""
-        self.instance: User = await User.find_current(email=self.email)
+        self.instance = await User.find_current(email=self.email)
 
-        if self.instance.verify_password(self.password):
+        if self.instance is not None and self.instance.verify_password(self.password):
             return True
 
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Les identifiants que vous avez saisi ne sont pas valides."
-            "Si vous avez oublié votre mot de passe, veuillez procéder à sa réinitialisation.",
+            detail=(
+                "Les identifiants que vous avez saisi ne sont pas valides. "
+                "Si vous avez oublié votre mot de passe, veuillez procéder à sa réinitialisation."
+            ),
         )
 
 
