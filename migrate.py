@@ -23,5 +23,4 @@ async def run_migrations() -> None:
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_migrations())
+    asyncio.run(run_migrations())

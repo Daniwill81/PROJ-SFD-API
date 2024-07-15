@@ -6,17 +6,6 @@ Platforme users role enumeration.
 import enum
 
 
-class RoleTypeEnum(str, enum.Enum):
-    """The type of institution.
-
-    Government institution have many types.
-    This is because each institution plays a different role.
-    """
-
-    ADMIN = "ADMIN"  # SFD - Super-administrateur
-    INSP = "INSP"  # SFD - Super-inspecteur
-
-
 class RoleEnum(str, enum.Enum):
     """List of roles available for users.
 

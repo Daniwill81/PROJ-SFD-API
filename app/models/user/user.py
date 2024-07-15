@@ -12,19 +12,19 @@ import pydantic
 import pymongo
 import pymongo.collation
 from beanie import operators
+from passlib.context import CryptContext
 
 from sap.beanie import Document, Link
 from sap.beanie.mixins import PasswordMixin
 
 from app.models.enums import RoleEnum
 
-from .roledesc import RoleDesc
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class User(PasswordMixin, Document):
     """Represent a user of the platform."""
 
-    roledesc: Link[RoleDesc]
     role: RoleEnum
     first_name: str
     last_name: str
@@ -37,19 +37,15 @@ class User(PasswordMixin, Document):
         """Format user name."""
         return f"l'utilisateur {self.first_name} {self.last_name.upper()}"
 
+    def verify_password(self, plain_password: str) -> bool:
+        return pwd_context.verify(plain_password, self.hashed_password)
+
+    def set_password(self, password: str) -> None:
+        self.hashed_password = pwd_context.hash(password)
+
     def get_name(self) -> str:
         """Get full name of the user."""
         return f"{self.first_name} {self.last_name}"
-
-    """def has_perm(self, perm: typing.Union[str, RoleEnum]) -> str:
-        Check if the user has access to a specific role permission.
-        if perm == "*" and self.role:
-            self.role = perm
-            return self.role == perm"""
-
-    """def has_perms(self, perms: typing.Union[list[str], list[RoleEnum]]) -> str:
-        Check if the user has access to any of the provided permissions.
-        return any(self.has_perm(perm) for perm in perms)"""
 
     async def generate_auth_key(self) -> None:
         """Generate a random string for auth token."""

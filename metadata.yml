@@ -1,11 +1,3 @@
-rolesdesc:
-  - acronym: ADMIN
-    name: Administrateur SFD gestionnaire de la plateforme
-    type: ADMIN
-  - acronym: INSP
-    name: Inspecteur SFD
-    type: INSP
-
 superusers:
   - first_name: Admin
     last_name: Plateforme

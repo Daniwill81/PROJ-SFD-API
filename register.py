@@ -3,6 +3,7 @@ Register metadata to run the Application.
 
 Data is loading from metadata.yaml
 """
+
 import asyncio
 import typing
 
@@ -11,8 +12,8 @@ import yaml
 from sap.beanie import Document
 from sap.beanie.exceptions import Object404Error
 
-from app.models import RoleDesc, User
-from app.models.enums import RoleEnum, RoleTypeEnum
+from app.models import User
+from app.models.enums import RoleEnum
 from AppMain.asgi import initialize_beanie
 from AppMain.settings import logger  # AppSettings
 
@@ -22,10 +23,9 @@ async def register() -> None:
     await initialize_beanie()
 
     with open("metadata.yml", "r", encoding="utf-8") as stream:
-        metadata: dict[str, typing.Any] = yaml.safe_load(stream)
+        metadata = yaml.safe_load(stream)
 
-    await register_roledescs(metadata["rolesdesc"])
-    await register_superusers(data_list=metadata["superusers"])
+    await register_superusers(metadata["superusers"])
 
 
 async def register_data(doc_model: type[Document], data_list: list[dict[str, typing.Any]], pk_name: str) -> None:
@@ -41,34 +41,27 @@ async def register_data(doc_model: type[Document], data_list: list[dict[str, typ
             await instance.save()
 
 
-async def register_roledescs(data_list: list[dict[str, typing.Any]]) -> None:
-    """Register roles described in metadata."""
-    await register_data(RoleDesc, data_list, "type")
-
-
 async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
     """Create the super admin account."""
-    user_role: RoleDesc = await RoleDesc.find_one_or_404(RoleDesc.type == RoleTypeEnum.ADMIN)
-
     for data_row in data_list:
         user = await User.find_one(User.email == data_row["email"])
         if user:
             print(f"Admin {user.email} already exists.")
             continue
 
-        user = await User(
+        user = User(
             first_name=data_row["first_name"],
             last_name=data_row["last_name"],
             email=data_row["email"],
-            password=data_row["password"],
             role=RoleEnum.ADMIN1,
-            roledesc=user_role,
-        ).create()
+            password=data_row["password"],
+        )
+        user.set_password(data_row["password"])
+        await user.create()
 
         assert user.id
         print(f"Admin {user.email} was successfully created.")
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(register())
+    asyncio.run(register())

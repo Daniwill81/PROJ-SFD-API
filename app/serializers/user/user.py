@@ -12,7 +12,6 @@ import pydantic
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
 from app.models.enums import RoleEnum
-from app.models.user.roledesc import RoleDesc
 from app.models.user.user import User
 
 
@@ -34,7 +33,6 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
     last_name: str
     email: pydantic.EmailStr
     password: str
-    roledesc: RoleDesc
     role: RoleEnum
 
     # The fields bellow are not serialized
@@ -67,7 +65,6 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
             last_name=self.last_name,
             email=self.email,
             password=self.password,
-            roledesc=self.roledesc,
             role=self.role,
         )
         await user.create()
