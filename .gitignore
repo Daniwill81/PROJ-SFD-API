@@ -65,3 +65,8 @@ _local
 
 db.sqlite3
 *.log
+
+
+#Deta
+.space
+Spacefile
