@@ -19,7 +19,7 @@ class RekonData(Document):
     """
 
     sfd: Link[Sfd]
-    accoubt_number: str
+    account_number: str
     amount: int
     year: int
 
