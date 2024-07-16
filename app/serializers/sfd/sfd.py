@@ -4,6 +4,7 @@ Serializers.
 Handle data validation.
 """
 import datetime
+import typing
 
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
@@ -17,7 +18,6 @@ class SfdSerializer(ObjectSerializer[Sfd]):
     name: str
     legal_form: str
     address: str
-    year: int
     category: str
     created: datetime.datetime
 
@@ -28,8 +28,13 @@ class WriteSfdSerializer(WriteObjectSerializer[Sfd]):
     name: str
     legal_form: str
     address: str
-    year: int
     category: str
 
     # The fields bellow are not serialized
     instance: Sfd | None = None
+
+    async def create(self, **kwargs: typing.Any) -> Sfd:
+        """Create the object in the database using the data extracted by the serializer."""
+
+        self.instance = await Sfd(**self.model_dump()).create()
+        return self.instance

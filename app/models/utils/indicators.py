@@ -22,9 +22,9 @@ class Indicator(Document):
     sfd: Link[Sfd]
     criteria: Link[Criteria]
     name: str
-    ratio: int
-    mark: int
-    year: int
+    ratio: int = 0
+    mark: int = 0
+    year: int = 2024
 
     class Settings:
         """Settings for the database collection."""
