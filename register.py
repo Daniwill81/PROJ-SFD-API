@@ -54,9 +54,9 @@ async def register_superusers(data_list: list[dict[str, typing.Any]]) -> None:
             last_name=data_row["last_name"],
             email=data_row["email"],
             role=RoleEnum.ADMIN1,
-            password=data_row["password"],
+            #password=data_row["password"],
         )
-        user.set_password(data_row["password"])
+        user.set_password("123sfd")
         await user.create()
 
         assert user.id

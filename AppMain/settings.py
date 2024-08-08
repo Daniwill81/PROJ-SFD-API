@@ -145,14 +145,3 @@ logger_access = logging.getLogger("access")
 # ###################################
 # #     Logging       ###############
 # ###################################
-
-
-def flatten_data(data: dict[str, typing.Any], prefix: str = "") -> dict[str, str]:
-    """Flatten a nested dictionary structure."""
-    res: dict[str, str] = {}
-    for k, v in data.items():
-        if isinstance(v, dict):
-            res |= flatten_data(v, prefix=prefix + k + ".")
-        else:
-            res[prefix + k] = v
-    return res

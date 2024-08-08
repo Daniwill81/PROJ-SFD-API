@@ -57,7 +57,7 @@ class UserAuth(BasicAuth):
         try:
             if auth_key:
                 return await self.user_model.find_one_or_404(
-                    operators.Or(operators.Eq(User.auth_key, user_key), operators.Eq(User.api_key, user_key))
+                    operators.Or(operators.Eq(User.auth_key, user_key), operators.Eq(User.auth_key, user_key))
                 )
             return await self.user_model.get_or_404(user_key)
         except (Object404Error, jwt.exceptions.InvalidTokenError) as exc:

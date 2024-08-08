@@ -29,9 +29,7 @@ class User(PasswordMixin, Document):
     first_name: str
     last_name: str
     email: pydantic.EmailStr
-    password: str
     auth_key: str | None = None
-    api_key: str | None = None
 
     def __str__(self) -> str:
         """Format user name."""

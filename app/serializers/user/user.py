@@ -3,11 +3,13 @@
 
 Handle data validation.
 """
+import re
 
 import datetime
 import typing
 
 import pydantic
+from pydantic import Field
 
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
@@ -32,11 +34,23 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
     first_name: str
     last_name: str
     email: pydantic.EmailStr
-    password: str
+    password: str = Field(min_length=8)
     role: RoleEnum
 
     # The fields bellow are not serialized
     instance: User | None = None
+    
+    @pydantic.field_validator("password")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        """Verify that the password fit security criteria"""
+        if not re.findall(r"[a-zA-Z]+", value):
+            raise AssertionError("Votre mot de passe doit contenir au moins une lettre.")
+        if not re.findall(r"[0-9]+", value):
+            raise AssertionError("Votre mot de passe doit contenir au moins 1 chiffre.")
+        if re.match(r"^\w+$", value):
+            raise AssertionError("Votre mot de passe doit contenir au moins 1 caractère spécial.")
+        return value
 
     async def run_async_validators(self, **kwargs: typing.Any) -> None:
         """Check that data pass DB validation."""
@@ -59,14 +73,13 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
 
     async def create(self, **kwargs: typing.Any) -> User:
         """Create users."""
-        # await self.run_async_validators(**kwargs)
         user = User(
             first_name=self.first_name,
             last_name=self.last_name,
             email=self.email,
-            password=self.password,
             role=self.role,
         )
+        user.set_password(self.password)
         await user.create()
         self.instance = user
         return user
@@ -83,10 +96,3 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
         await instance.save()
         self.instance = instance
         return instance
-
-
-class APIKeySerializer(ObjectSerializer[User]):
-    """Serializer the `APIKey` object that depends on the User object."""
-
-    id: str
-    api_key: str
