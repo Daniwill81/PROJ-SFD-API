@@ -6,7 +6,8 @@ It can be a int or another type of data.
 """
 from sap.beanie import Document, Link
 
-from app.models import Sfd, Criteria
+from app.models.criterias.criteria import Criteria
+from app.models.sfd.sfd import Sfd
 
 
 class Cotation(Document):
