@@ -6,7 +6,7 @@ It can be a int or another type of data.
 """
 from sap.beanie import Document, Link
 
-from app.models.sfd.sfd import Sfd
+from app.models import Sfd, Criteria
 
 
 class Cotation(Document):
@@ -17,6 +17,7 @@ class Cotation(Document):
     """
 
     sfd: Link[Sfd]
+    criteria: Link[Criteria]
     mark: int
     year: int
 

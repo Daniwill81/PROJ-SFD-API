@@ -16,55 +16,54 @@ from fastapi import APIRouter, Depends, Request, status
 
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
+from app.models import Cotation
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
-from app.models.utils.rekonData import RekonData
-
+from app.serializers.criterias.cotation import CotationSerializer
 from app import controllers
-from app.serializers.utils.rekonData import RekonDataSerializer
 
 router = APIRouter()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    rekonData: RekonData,
+    cotation: Cotation,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> RekonDataSerializer:
+) -> CotationSerializer:
     """Create a indicator."""
-    sfd = rekonData.sfd
-    account_number = rekonData.account_number
-    amount = rekonData.amount
-    year = rekonData.year
+    sfd = cotation.sfd
+    criteria = cotation.criteria
+    mark = cotation.mark
+    year = cotation.year
 
-    await controllers.rekonData.rekonData_create(sfd=sfd, account_number=account_number, amount=amount, year=year)
-    instance = rekonData
+    await controllers.cotation.cotation_create(sfd=sfd, criteria=criteria, mark=mark, year=year)
+    instance = cotation
 
-    return RekonDataSerializer.read(instance)
+    return CotationSerializer.read(instance)
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)
 async def retrieve(
     pk: str,
-) -> RekonDataSerializer:
-    """Retrieve a indicator by id."""
-    instance = await RekonData.get_or_404(pk)
-    return RekonDataSerializer.read(instance)
+) -> CotationSerializer:
+    """Retrieve a criteria by id."""
+    instance = await Cotation.get_or_404(pk)
+    return CotationSerializer.read(instance)
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def listing(
     request: Request,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> PaginatedData[RekonDataSerializer]:
-    """Retrieve all sfd."""
+) -> PaginatedData[CotationSerializer]:
+    """Retrieve all criteria."""
     cursor = CursorInfo(request=request)
 
-    qs = RekonData.find(**cursor.get_beanie_query_params())
+    qs = Cotation.find(**cursor.get_beanie_query_params())
 
     cursor.set_count(await qs.count())
-    result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
+    result: PaginatedData[CotationSerializer] = CotationSerializer.read_page(
         await qs.to_list(),
         request=request,
         cursor_info=cursor,
