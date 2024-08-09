@@ -21,7 +21,7 @@ class RekonData(Document):
     sfd: Link[Sfd]
     account_number: str
     amount: int
-    year: int
+    year: int = 2024
 
     class Settings:
         """Settings for the database collection."""
