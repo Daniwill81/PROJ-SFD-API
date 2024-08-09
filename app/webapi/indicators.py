@@ -20,20 +20,30 @@ from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.indicators import Indicator
-from app.serializers.utils.indicators import IndicatorSerializer, WriteIndicatorSerializer
+from app.query.indicator import IndicatorQuery
+
+from app import controllers
+from app.serializers.utils.indicators import IndicatorSerializer
 
 router = APIRouter()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    request: Request,
-    serializer_write: WriteIndicatorSerializer,
+    indicator: Indicator,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
     """Create a indicator."""
-    await serializer_write.run_async_validators(request=request)
-    instance = await serializer_write.create(request=request, request_user=request_user)
+    sfd = indicator.sfd
+    criteria = indicator.criteria
+    name = indicator.name
+    ratio = indicator.ratio
+    mark = indicator.mark
+    year = indicator.year
+
+    await controllers.indicator.indicator_create(sfd=sfd, criteria=criteria, name=name, ratio=ratio, mark=mark, year=year)
+    instance = indicator
+
     return IndicatorSerializer.read(instance)
 
 
@@ -53,12 +63,18 @@ async def listing(
 ) -> PaginatedData[IndicatorSerializer]:
     """Retrieve all indicator."""
     cursor = CursorInfo(request=request)
+    query = IndicatorQuery(user=request_user, filters=request.query_params)
 
-    qs = Indicator.find(**cursor.get_beanie_query_params())
+    if search_text := request.query_params.get("q"):
+        qs = query.get_search(search_text)
+    else:
+        qs = query.get_qs().find(**cursor.get_beanie_query_params())
+
+    instance_list = await qs.to_list()
 
     cursor.set_count(await qs.count())
     result: PaginatedData[IndicatorSerializer] = IndicatorSerializer.read_page(
-        await qs.to_list(),
+        instance_list,
         request=request,
         cursor_info=cursor,
     )

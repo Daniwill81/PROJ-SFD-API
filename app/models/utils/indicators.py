@@ -1,7 +1,7 @@
 """
 Indicators.
 
-It can be a gorvment org or a private org.
+It can be a gorvment fin org or a private fin org.
 
 """
 import pymongo

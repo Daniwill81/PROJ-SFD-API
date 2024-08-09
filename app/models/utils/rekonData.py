@@ -28,6 +28,6 @@ class RekonData(Document):
 
         name = "rekondata"
         indexes = [
-            # Ensure that there is no duplicate for names
+            # Ensure that there is no duplicate for account number
             pymongo.IndexModel([("account_number", pymongo.ASCENDING)], unique=True),
         ]
