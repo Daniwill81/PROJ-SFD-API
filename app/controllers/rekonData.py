@@ -1,4 +1,4 @@
-from app.models import Sfd, RekonData
+from app.models import RekonData, Sfd
 
 
 async def rekonData_create(
@@ -10,5 +10,5 @@ async def rekonData_create(
     """Create indicator."""
 
     rekonData = await RekonData(sfd=sfd, account_number=account_number, amount=amount, year=year).create()
-    
+
     return rekonData

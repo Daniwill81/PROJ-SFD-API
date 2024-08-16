@@ -3,9 +3,8 @@
 
 Handle data validation.
 """
-import re
-
 import datetime
+import re
 import typing
 
 import pydantic
@@ -39,7 +38,7 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
 
     # The fields bellow are not serialized
     instance: User | None = None
-    
+
     @pydantic.field_validator("password")
     @classmethod
     def validate_password(cls, value: str) -> str:

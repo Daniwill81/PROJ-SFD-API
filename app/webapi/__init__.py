@@ -10,8 +10,8 @@ The router in routes.py is referred as the main router for this app.
 from fastapi import APIRouter
 
 from .auth import router as router_auth
-from .criteria import router as router_criteria
 from .cotation import router as router_cotation
+from .criteria import router as router_criteria
 from .indicators import router as router_indicators
 from .rekonData import router as router_rekonData
 from .sfd import router as router_sfd

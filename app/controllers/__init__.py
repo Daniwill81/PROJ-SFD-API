@@ -3,7 +3,7 @@ Indicator controller.
 
 COntroller for serializer.
 """
-from . import indicator, rekonData, cotation
+from . import cotation, indicator, rekonData
 
 __all__ = [
     "indicator",

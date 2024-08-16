@@ -16,13 +16,12 @@ from fastapi import APIRouter, Depends, Request, status
 
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
+from app import controllers
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.query.indicator import IndicatorQuery
-
-from app import controllers
 from app.serializers.utils.indicators import IndicatorSerializer
 
 router = APIRouter()
@@ -41,7 +40,9 @@ async def create(
     mark = indicator.mark
     year = indicator.year
 
-    await controllers.indicator.indicator_create(sfd=sfd, criteria=criteria, name=name, ratio=ratio, mark=mark, year=year)
+    await controllers.indicator.indicator_create(
+        sfd=sfd, criteria=criteria, name=name, ratio=ratio, mark=mark, year=year
+    )
     instance = indicator
 
     return IndicatorSerializer.read(instance)

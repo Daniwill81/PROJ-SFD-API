@@ -5,10 +5,10 @@ Handle data validation.
 """
 import datetime
 
-from sap.fastapi import ObjectSerializer
 from sap.beanie import Link
+from sap.fastapi import ObjectSerializer
 
-from app.models import Cotation, Sfd, Criteria
+from app.models import Cotation, Criteria, Sfd
 
 
 class CotationSerializer(ObjectSerializer[Cotation]):
