@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: my-fastapi-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    ports:
+      - port: 10000
+        protocol: http
+    envVars:
+      - key: APP_ENV
+        value: "DEV"
+      - key: APP_SETTINGS_LOG_DIR
+        value: "/tmp/"
+      - key: APP_SETTINGS_MONGO_HOST
+        value: "cluster0.oa0icks.mongodb.net"
+      - key: APP_SETTINGS_MONGO_DB
+        value: "sfddb"
+      - key: APP_SETTINGS_MONGO_USERNAME
+        value: "daniwill"
+      - key: APP_SETTINGS_MONGO_PASSWORD
+        value: "daniel022000"
+      - key: APP_SETTINGS_MONGO_PROTOCOL
+        value: "mongodb+srv"
+      - key: APP_SETTINGS_MONGO_PARAMS
+        value: ""
