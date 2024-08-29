@@ -5,8 +5,8 @@ Handle data validation.
 """
 import datetime
 
-from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 from sap.beanie import Link
+from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
 from app.models.sfd.sfd import Sfd
 from app.models.utils.rekonData import RekonData

@@ -1,5 +1,6 @@
 from beanie import PydanticObjectId
 from beanie.odm.queries.find import FindMany
+
 from app.models import Indicator
 
 from .base import Query

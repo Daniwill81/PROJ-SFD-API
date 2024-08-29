@@ -6,10 +6,9 @@ Handle data validation.
 import datetime
 
 from sap.beanie import Link
-
 from sap.fastapi import ObjectSerializer
 
-from app.models import Indicator, Criteria, Sfd
+from app.models import Criteria, Indicator, Sfd
 
 
 class IndicatorSerializer(ObjectSerializer[Indicator]):

@@ -16,12 +16,11 @@ from fastapi import APIRouter, Depends, Request, status
 
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
+from app import controllers
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.rekonData import RekonData
-
-from app import controllers
 from app.serializers.utils.rekonData import RekonDataSerializer
 
 router = APIRouter()
