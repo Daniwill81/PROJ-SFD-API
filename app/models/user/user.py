@@ -4,7 +4,7 @@ Users.
 Users have access to the platform and can use it to perform actions.
 Anyone that can log in to the platform is considered as a user.
 """
-
+import datetime
 import typing
 
 import passlib.pwd
@@ -14,10 +14,10 @@ import pymongo.collation
 from beanie import operators
 from passlib.context import CryptContext
 
-from sap.beanie import Document, Link
+from sap.beanie import Document
 from sap.beanie.mixins import PasswordMixin
 
-from app.models.enums import RoleEnum
+from app.models.enums import RoleEnum, SexEnum
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -28,6 +28,8 @@ class User(PasswordMixin, Document):
     role: RoleEnum
     first_name: str
     last_name: str
+    birthdate: datetime.date | None = None
+    sex: SexEnum | None = None
     email: pydantic.EmailStr
     auth_key: str | None = None
 

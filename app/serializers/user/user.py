@@ -12,7 +12,7 @@ from pydantic import Field
 
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
-from app.models.enums import RoleEnum
+from app.models.enums import RoleEnum, SexEnum
 from app.models.user.user import User
 
 
@@ -23,6 +23,8 @@ class UserSerializer(ObjectSerializer[User]):
     first_name: str
     last_name: str
     email: pydantic.EmailStr
+    birthdate: datetime.date | None = None
+    sex: SexEnum | None = None
     role: RoleEnum
     created: datetime.datetime
 
@@ -33,6 +35,8 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
     first_name: str
     last_name: str
     email: pydantic.EmailStr
+    birthdate: datetime.date | None = None
+    sex: SexEnum | None = None
     password: str = Field(min_length=8)
     role: RoleEnum
 
@@ -75,6 +79,8 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
         user = User(
             first_name=self.first_name,
             last_name=self.last_name,
+            birthdate=self.birthdate,
+            sex=self.sex,
             email=self.email,
             role=self.role,
         )
@@ -89,6 +95,8 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
         data_to_update = {
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "birthdate":self.birthdate,
+            "sex":self.sex,
             "email": self.email,
         }
         instance: User = self.instance.model_copy(update=data_to_update)

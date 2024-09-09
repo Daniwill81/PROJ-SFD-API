@@ -12,8 +12,8 @@ class RoleEnum(str, enum.Enum):
     Each role has different access and set of permissions.
     """
 
-    ADMIN1 = "ADMIN1"  # SFD - Super-administrateur
-    INSP1 = "INSP1"  # SFD - inspecteur
+    ADMIN1 = "ADMIN"  # SFD - Super-administrateur
+    INSP1 = "INSPECTEUR"  # SFD - inspecteur
 
     @classmethod
     def get_list_primary(cls) -> list["RoleEnum"]:
@@ -22,3 +22,9 @@ class RoleEnum(str, enum.Enum):
             cls.ADMIN1,
             cls.INSP1,
         ]
+
+
+class SexEnum(str, enum.Enum):
+    """Sex of users"""
+    M = "Male"
+    F = "Female"

@@ -28,19 +28,21 @@ router = APIRouter()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    rekonData: RekonData,
+    rekonDataList: list[RekonData],
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> RekonDataSerializer:
-    """Create a indicator."""
-    sfd = rekonData.sfd
-    account_number = rekonData.account_number
-    amount = rekonData.amount
-    year = rekonData.year
+) -> list[RekonDataSerializer]:
+    """Create multiple rekonData."""
+    created_rekonData = []
+    for rekonData in rekonDataList:
+        sfd = rekonData.sfd
+        account_number = rekonData.account_number
+        amount = rekonData.amount
+        year = rekonData.year
 
-    await controllers.rekonData.rekonData_create(sfd=sfd, account_number=account_number, amount=amount, year=year)
-    instance = rekonData
+        instance = await controllers.rekonData.rekonData_create(sfd=sfd, account_number=account_number, amount=amount, year=year)
+        created_rekonData.append(RekonDataSerializer.read(instance))
 
-    return RekonDataSerializer.read(instance)
+    return created_rekonData
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)
