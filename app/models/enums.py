@@ -12,15 +12,15 @@ class RoleEnum(str, enum.Enum):
     Each role has different access and set of permissions.
     """
 
-    ADMIN1 = "ADMIN"  # SFD - Super-administrateur
-    INSP1 = "INSPECTEUR"  # SFD - inspecteur
+    ADMIN = "ADMIN"  # SFD - Super-administrateur
+    INSPECTEUR = "INSPECTEUR"  # SFD - inspecteur
 
     @classmethod
     def get_list_primary(cls) -> list["RoleEnum"]:
         """Get the list of primary users."""
         return [
-            cls.ADMIN1,
-            cls.INSP1,
+            cls.ADMIN,
+            cls.INSPECTEUR,
         ]
 
 
