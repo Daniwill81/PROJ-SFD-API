@@ -1,4 +1,3 @@
-#from typing import List
 from app.models import RekonData
 
 
@@ -16,13 +15,13 @@ def calculate_indicator_mark(rekon_data_list: list[RekonData]) -> float: # List
     average = total_amount / count
     #scaled_mark = min(100, max(0, average / 1000 100)) # Assuming 1000 is the max expected average
     # Round to two decimal places
-    return round(scaled_mark, 2)
+    #return round(scaled_mark, 2)
 
-def calculate_sum_indicator(rekon_data_list: List[RekonData]) -> float:
+def calculate_sum_indicator(rekon_data_list: list[RekonData]) -> float:
     """Calculate a simple sum of all RekonData amounts."""
     return sum(data.amount for data in rekon_data_list)
 
-def calculate_weighted_average(rekon_data_list: List[RekonData], weights: List[float]) -> float:
+def calculate_weighted_average(rekon_data_list: list[RekonData], weights: list[float]) -> float:
     """
     Calculate a weighted average of RekonData amounts.
     :param rekon_data_list: List of RekonData objects
@@ -35,4 +34,4 @@ def calculate_weighted_average(rekon_data_list: List[RekonData], weights: List[f
     total_weight = sum(weights)
     #if total_weight == 0:
     #return 0
-    return total_weighted_amount / total_weight
+    return total_weight

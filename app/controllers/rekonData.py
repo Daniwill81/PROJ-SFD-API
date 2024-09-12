@@ -21,7 +21,7 @@ async def rekonData_create(
                 name=data['indicator_name'],
                 year=year
             ).create()
-            data['indicator_'] = indicator.id
+            data['indicator'] = indicator
 
         # Create RekonData
         rekon_data = await RekonData(
@@ -40,7 +40,7 @@ async def rekonData_create(
         indicators_to_update[data['indicator']].append(rekon_data)
 
     # create or updateIndicators
-    for indicator, rekon_data_list in indicators_to_create.items():
+    for indicator, rekon_data_list in indicators_to_update.items():
         indicator = await Indicator.get(indicator)
         if not indicator:
             # If indicator doesn't exist, create it
