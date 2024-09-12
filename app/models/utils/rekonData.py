@@ -9,6 +9,8 @@ import pymongo
 from sap.beanie import Document, Link
 
 from app.models.sfd.sfd import Sfd
+from app.models.criterias.criteria import Criteria
+from app.models.utils.indicators import Indicator
 
 
 class RekonData(Document):
@@ -19,6 +21,8 @@ class RekonData(Document):
     """
 
     sfd: Link[Sfd]
+    indicator: Link[Indicator] | None = None
+    criteria: Link[Criteria]
     account_number: str
     amount: int
     year: int = 2024

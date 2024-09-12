@@ -27,27 +27,6 @@ from app.serializers.utils.indicators import IndicatorSerializer
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
-async def create(
-    indicator: Indicator,
-    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> IndicatorSerializer:
-    """Create a indicator."""
-    sfd = indicator.sfd
-    criteria = indicator.criteria
-    name = indicator.name
-    ratio = indicator.ratio
-    mark = indicator.mark
-    year = indicator.year
-
-    await controllers.indicator.indicator_create(
-        sfd=sfd, criteria=criteria, name=name, ratio=ratio, mark=mark, year=year
-    )
-    instance = indicator
-
-    return IndicatorSerializer.read(instance)
-
-
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)
 async def retrieve(
     pk: str,
