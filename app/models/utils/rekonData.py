@@ -27,3 +27,7 @@ class RekonData(Document):
         """Settings for the database collection."""
 
         name = "rekondata"
+        indexes = [
+            # Ensure that there is no duplicate for account_number
+            pymongo.IndexModel([("account_number", pymongo.ASCENDING)], unique=True),
+        ]
