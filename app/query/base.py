@@ -1,6 +1,5 @@
 import typing
 
-import beanie
 from beanie.odm.queries.find import FindMany
 from fastapi.datastructures import QueryParams
 

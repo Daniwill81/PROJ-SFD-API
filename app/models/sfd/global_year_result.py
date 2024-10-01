@@ -1,5 +1,5 @@
 """
-G;obal year result for a sfd.
+Global year result for a sfd.
 
 It can be a gorvment org or a private org.
 

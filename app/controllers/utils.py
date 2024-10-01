@@ -17,7 +17,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         return sum(data.amount for data in rekon_data_list if data.account_number in accounts)
 
     if indicator_name == "limitation des risques":
-        resource_A_accounts_number = {
+        resource_a_accounts_number = {
             "A12",
             "A2A",
             "A3A",
@@ -35,24 +35,24 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "N3A",
             "Q1A",
         }
-        resource_B_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
+        resource_b_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        if missing_A or missing_B:
-            missing_accounts = ", ".join(missing_A + missing_B)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'limitation des risques': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        ratio = (resource_A / resource_B) * 100
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
         return ratio
 
-    elif indicator_name == "couverture des emplois à mlt par des ressources stables":
-        resource_A_accounts_number = {"L01", "F2A", "F3F", "F50", "G15", "G2A", "G30", "G35", "G60", "G70"}
-        resource_B_accounts_number = {
+    if indicator_name == "couverture des emplois à mlt par des ressources stables":
+        resource_a_accounts_number = {"L01", "F2A", "F3F", "F50", "G15", "G2A", "G30", "G35", "G60", "G70"}
+        resource_b_accounts_number = {
             "A2H",
             "A2I",
             "A2J",
@@ -70,43 +70,43 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "D40",
         }
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        if missing_A or missing_B:
-            missing_accounts = ", ".join(missing_A + missing_B)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'couverture des emplois à mlt par des ressources stables': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        ratio = (resource_A / resource_B) * 100
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
         return ratio
 
-    elif indicator_name == "limitation des risques pris sur une seule signature":
-        resource_A_accounts_number = {"A1X"}
-        resource_B_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
-        resource_C_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+    if indicator_name == "limitation des risques pris sur une seule signature":
+        resource_a_accounts_number = {"A1X"}
+        resource_b_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        missing_C = check_accounts_exist(resource_C_accounts_number, rekon_data_list)
-        if missing_A or missing_B or missing_C:
-            missing_accounts = ", ".join(missing_A + missing_B + missing_C)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'limitation des risques pris sur une seule signature': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        resource_C = calculate_resource(resource_C_accounts_number, rekon_data_list)
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
 
-        deducted = resource_B - resource_C
-        ratio = (resource_A / deducted) * 100
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
         return ratio
 
-    elif indicator_name == "norme de liquidité":
-        resource_A_accounts_number = {
+    if indicator_name == "norme de liquidité":
+        resource_a_accounts_number = {
             "A10",
             "A12",
             "A2J",
@@ -128,7 +128,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "N2A",
             "N2J",
         }
-        resource_B_accounts_number = {
+        resource_b_accounts_number = {
             "F1A",
             "F2A",
             "F3E",
@@ -151,38 +151,38 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "N2M",
         }
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        if missing_A or missing_B:
-            missing_accounts = ", ".join(missing_A + missing_B)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'norme de liquidité': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        ratio = (resource_A / resource_B) * 100
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
         return ratio
 
-    elif indicator_name == "la réserve générale":
-        resource_A_accounts_number = {"L80"}
-        resource_B_accounts_number = {"L70"}
+    if indicator_name == "la réserve générale":
+        resource_a_accounts_number = {"L80"}
+        resource_b_accounts_number = {"L70"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        if missing_A or missing_B:
-            missing_accounts = ", ".join(missing_A + missing_B)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'la réserve générale': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        ratio = resource_A + resource_B
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = resource_a + resource_b
         return ratio
 
-    elif indicator_name == "la norme de capitalisation":
-        resource_A_accounts_number = {
+    if indicator_name == "la norme de capitalisation":
+        resource_a_accounts_number = {
             "L10",
             "L20",
             "L27",
@@ -199,29 +199,29 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_B_accounts_number = {"B"}
-        resource_C_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_b_accounts_number = {"B"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        missing_C = check_accounts_exist(resource_C_accounts_number, rekon_data_list)
-        if missing_A or missing_B or missing_C:
-            missing_accounts = ", ".join(missing_A + missing_B + missing_C)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'la norme de capitalisation': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        resource_C = calculate_resource(resource_C_accounts_number, rekon_data_list)
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
 
-        deducted = resource_A - resource_C
-        ratio = (deducted / resource_B) * 100
+        deducted = resource_a - resource_c
+        ratio = (deducted / resource_b) * 100
         return ratio
 
-    elif indicator_name == "la limitation des prises de participation":
-        resource_A_accounts_number = {"D1E"}
-        resource_B_accounts_number = {
+    if indicator_name == "la limitation des prises de participation":
+        resource_a_accounts_number = {"D1E"}
+        resource_b_accounts_number = {
             "L10",
             "L20",
             "L27",
@@ -238,28 +238,28 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_C_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        missing_C = check_accounts_exist(resource_C_accounts_number, rekon_data_list)
-        if missing_A or missing_B or missing_C:
-            missing_accounts = ", ".join(missing_A + missing_B + missing_C)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'la limitation des prises de participation': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        resource_C = calculate_resource(resource_C_accounts_number, rekon_data_list)
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
 
-        deducted = resource_B - resource_C
-        ratio = (resource_A / deducted) * 100
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
         return ratio
 
-    elif indicator_name == "la limitation des prêts aux dirigeants, au personnel ainsi qu'aux personnes liées":
-        resource_A_accounts_number = {"A"}
-        resource_B_accounts_number = {
+    if indicator_name == "la limitation des prêts aux dirigeants, au personn ainsi qu'aux personnes liées":
+        resource_a_accounts_number = {"A"}
+        resource_b_accounts_number = {
             "L10",
             "L20",
             "L27",
@@ -276,28 +276,28 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_C_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        missing_C = check_accounts_exist(resource_C_accounts_number, rekon_data_list)
-        if missing_A or missing_B or missing_C:
-            missing_accounts = ", ".join(missing_A + missing_B + missing_C)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'la limitation des prêts aux dirigeants, au personnel ainsi qu'aux personnes liées': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        resource_C = calculate_resource(resource_C_accounts_number, rekon_data_list)
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
 
-        deducted = resource_B - resource_C
-        ratio = (resource_A / deducted) * 100
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
         return ratio
 
-    elif indicator_name == "La limitation des opérations autres que l'épargne et le crédit":
-        resource_A_accounts_number = {"A"}
-        resource_B_accounts_number = {
+    if indicator_name == "La limitation des opérations autres que l'épargne et le crédit":
+        resource_a_accounts_number = {"A"}
+        resource_b_accounts_number = {
             "A12",
             "A30",
             "A70",
@@ -315,22 +315,22 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "Q1A",
         }
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        if missing_A or missing_B:
-            missing_accounts = ", ".join(missing_A + missing_B)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'La limitation des opérations autres que l'épargne et le crédit': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        ratio = (resource_A / resource_B) * 100
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
         return ratio
 
-    elif indicator_name == "Le financement des immobilisations et des participants":
-        resource_A_accounts_number = {"D24", "D25", "D31", "D36", "D41", "D45", "D46", "D47", "D1E"}
-        resource_B_accounts_number = {
+    if indicator_name == "Le financement des immobilisations et des participants":
+        resource_a_accounts_number = {"D24", "D25", "D31", "D36", "D41", "D45", "D46", "D47", "D1E"}
+        resource_b_accounts_number = {
             "L10",
             "L20",
             "L27",
@@ -347,23 +347,23 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_C_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
 
-        missing_A = check_accounts_exist(resource_A_accounts_number, rekon_data_list)
-        missing_B = check_accounts_exist(resource_B_accounts_number, rekon_data_list)
-        missing_C = check_accounts_exist(resource_C_accounts_number, rekon_data_list)
-        if missing_A or missing_B or missing_C:
-            missing_accounts = ", ".join(missing_A + missing_B + missing_C)
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
             raise AssertionError(
                 f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'Le financement des immobilisations et des participants': {missing_accounts}"
             )
 
-        resource_A = calculate_resource(resource_A_accounts_number, rekon_data_list)
-        resource_B = calculate_resource(resource_B_accounts_number, rekon_data_list)
-        resource_C = calculate_resource(resource_C_accounts_number, rekon_data_list)
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
 
-        deducted = resource_B - resource_C
-        ratio = (resource_A / deducted) * 100
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
         return ratio
 
     # Si aucun indicateur ne correspond

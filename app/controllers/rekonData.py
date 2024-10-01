@@ -1,7 +1,7 @@
 from app.models import RekonData, Sfd
 
 
-async def rekonData_create(
+async def rekon_data_create(
     sfd: Sfd,
     name: str,
     account_number: str,

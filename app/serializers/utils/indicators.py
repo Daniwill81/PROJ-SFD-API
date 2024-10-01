@@ -39,7 +39,8 @@ class WriteIndicatorSerializer(WriteObjectSerializer[Indicator]):
     # The fields below are not serialized
     instance: Indicator | None = None
 
-    async def calculate_ratio(self, indicator: Indicator) -> float:
+    @staticmethod
+    async def calculate_ratio(indicator: Indicator) -> float:
         """Calculate the ratio for the given indicator."""
         # Fetch all RekonData for this indicator's SFD and year
         rekon_data_list = await RekonData.find(

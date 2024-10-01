@@ -35,7 +35,7 @@ async def create(
     """Create multiple rekonData."""
     sfd = await Sfd.get_or_404(rekon_data_list[0].sfd)
 
-    created_rekon_data = await controllers.rekonData.rekonData_create(
+    created_rekon_data = await controllers.rekonData.rekon_data_create(
         rekon_data_list=[
             {
                 "account_number": data.account_number,
