@@ -1,53 +1,13 @@
-from app.models import RekonData, Sfd, Indicator, Criteria
-from app.controllers.utils import calculate_indicator_ratio  # Supposons que cette fonction existe
+from app.models import RekonData, Sfd
 
 async def rekonData_create(
-    rekon_data_list: list[dict],
     sfd: Sfd,
+    name: str,
+    account_number: str,
+    amount: int,
     year: int = 2024,
-) -> list[RekonData]:
-    """Create RekonData entries and create or update associated Indicators."""
-    created_rekon_data = []
-    indicators_to_update = {}
+) -> RekonData:
+    """Create rekondata."""
 
-    for data in rekon_data_list:
-        # Check if the indicator exists, if not create it
-        indicator = await Indicator.get(data['indicator'])
-        if not indicator:
-            criteria = await Criteria.get_or_404(data['criteria'])
-            indicator = await Indicator(
-                sfd=sfd,
-                criteria=criteria,
-                name=data['indicator_name'],
-                year=year
-            ).create()
-            data['indicator'] = indicator
-
-        # Create RekonData
-        rekon_data = await RekonData(
-            sfd=sfd,
-            account_number=data['account_number'],
-            amount=data['amount'],
-            year=year,
-            indicator=data['indicator'],
-            criteria=data['criteria']
-        ).create()
-        created_rekon_data.append(rekon_data)
-
-        # Group RekonData by indicator for later calculation
-        if data['indicator'] not in indicators_to_update:
-            indicators_to_update[data['indicator']] = []
-        indicators_to_update[data['indicator']].append(rekon_data)
-
-    # updateIndicators
-    for indicator, rekon_data_list in indicators_to_update.items():
-        indicator = await Indicator.get(indicator)
-
-        # Calculate indicator ratio
-        calculated_ratio = calculate_indicator_ratio(indicator, rekon_data_list)
-
-        # Update indicator
-        indicator.ratio = calculated_ratio
-        await indicator.save()
-
-    return created_rekon_data
+    rekonData = await RekonData(sfd=sfd, name=name, account_number=account_number, amount=amount, year=year).create()
+    return rekonData
