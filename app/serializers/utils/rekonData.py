@@ -23,5 +23,6 @@ class RekonDataSerializer(ObjectSerializer[RekonData]):
     indicator: Link[Indicator]
     account_number: str
     amount: int
+    name:str
     year: int = 2024
     created: datetime.datetime

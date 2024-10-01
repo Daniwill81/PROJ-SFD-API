@@ -1,5 +1,5 @@
 from app.models import RekonData, Sfd, Indicator, Criteria
-from app.controllers.utils import calculate_indicator_mark  # Supposons que cette fonction existe
+from app.controllers.utils import calculate_indicator_ratio  # Supposons que cette fonction existe
 
 async def rekonData_create(
     rekon_data_list: list[dict],
@@ -39,24 +39,15 @@ async def rekonData_create(
             indicators_to_update[data['indicator']] = []
         indicators_to_update[data['indicator']].append(rekon_data)
 
-    # create or updateIndicators
+    # updateIndicators
     for indicator, rekon_data_list in indicators_to_update.items():
         indicator = await Indicator.get(indicator)
-        if not indicator:
-            # If indicator doesn't exist, create it
-            criteria = await Criteria.get(data['criteria'])  # Assuming criteria is provided
-            indicator = await Indicator(
-                sfd=sfd,
-                criteria=criteria,
-                name=data['indicator_name'],  # Assuming indicator_name is provided
-                year=year
-            ).create()
 
-        # Calculate indicator mark
-        calculated_mark = calculate_indicator_mark(rekon_data_list)
+        # Calculate indicator ratio
+        calculated_ratio = calculate_indicator_ratio(indicator, rekon_data_list)
 
         # Update indicator
-        indicator.mark = calculated_mark
+        indicator.ratio = calculated_ratio
         await indicator.save()
 
     return created_rekon_data

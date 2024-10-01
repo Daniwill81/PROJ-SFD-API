@@ -22,16 +22,7 @@ class RekonData(Document):
 
     sfd: Link[Sfd]
     indicator: Link[Indicator] | None = None
-    criteria: Link[Criteria]
+    criteria: Link[Criteria] | None = None
     account_number: str
     amount: int
     year: int = 2024
-
-    class Settings:
-        """Settings for the database collection."""
-
-        name = "rekondata"
-        indexes = [
-            # Ensure that there is no duplicate for account number
-            pymongo.IndexModel([("account_number", pymongo.ASCENDING)], unique=True),
-        ]
