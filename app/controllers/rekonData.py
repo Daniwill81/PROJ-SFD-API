@@ -1,5 +1,6 @@
 from app.models import RekonData, Sfd
 
+
 async def rekonData_create(
     sfd: Sfd,
     name: str,

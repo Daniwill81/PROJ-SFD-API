@@ -18,9 +18,9 @@ from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
 from app.models.enums import RoleEnum
+from app.models.sfd.sfd import Sfd
 from app.models.user.auth import user_auth
 from app.models.user.user import User
-from app.models.sfd.sfd import Sfd
 from app.models.utils.rekonData import RekonData
 from app.serializers.utils.rekonData import RekonDataSerializer
 
@@ -34,16 +34,17 @@ async def create(
 ) -> list[RekonDataSerializer]:
     """Create multiple rekonData."""
     sfd = await Sfd.get_or_404(rekon_data_list[0].sfd)
-    
+
     created_rekon_data = await controllers.rekonData.rekonData_create(
-        rekon_data_list=[{
-            'account_number': data.account_number,
-            'amount': data.amount,
-            'year': data.year,
-            'indicator': data.indicator,
-            'criteria_id': data.criteria,
-        } for data in rekon_data_list],
-        sfd=sfd
+        rekon_data_list=[
+            {
+                "account_number": data.account_number,
+                "amount": data.amount,
+                "year": data.year,
+            }
+            for data in rekon_data_list
+        ],
+        sfd=sfd,
     )
 
     return [RekonDataSerializer.read(instance) for instance in created_rekon_data]

@@ -19,7 +19,6 @@ class RekonData(Document):
     """
 
     sfd: Link[Sfd]
-    name: str | None = None
     account_number: str
     amount: int
     year: int = 2024
@@ -28,7 +27,3 @@ class RekonData(Document):
         """Settings for the database collection."""
 
         name = "rekondata"
-        indexes = [
-            # Ensure that there is no duplicate for account_number
-            pymongo.IndexModel([("name", pymongo.ASCENDING)], unique=True),
-        ]

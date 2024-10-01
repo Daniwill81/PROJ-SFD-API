@@ -8,10 +8,10 @@ import datetime
 from sap.beanie import Link
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
-from app.models.sfd.sfd import Sfd
-from app.models.utils.rekonData import RekonData
 from app.models.criterias.criteria import Criteria
+from app.models.sfd.sfd import Sfd
 from app.models.utils.indicators import Indicator
+from app.models.utils.rekonData import RekonData
 
 
 class RekonDataSerializer(ObjectSerializer[RekonData]):
@@ -23,6 +23,6 @@ class RekonDataSerializer(ObjectSerializer[RekonData]):
     indicator: Link[Indicator]
     account_number: str
     amount: int
-    name:str
+    name: str
     year: int = 2024
     created: datetime.datetime

@@ -95,8 +95,8 @@ class WriteUserSerializer(WriteObjectSerializer[User]):
         data_to_update = {
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "birthdate":self.birthdate,
-            "sex":self.sex,
+            "birthdate": self.birthdate,
+            "sex": self.sex,
             "email": self.email,
         }
         instance: User = self.instance.model_copy(update=data_to_update)
