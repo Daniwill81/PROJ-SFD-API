@@ -22,8 +22,8 @@ class Indicator(Document):
     sfd: Link[Sfd]
     criteria: Link[Criteria]
     name: str
-    ratio: int | None = None
-    mark: int | None = None
+    ratio: float = 0
+    mark: int = 0
     year: int = 2024
 
     class Settings:

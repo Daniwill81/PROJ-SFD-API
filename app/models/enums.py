@@ -26,5 +26,6 @@ class RoleEnum(str, enum.Enum):
 
 class SexEnum(str, enum.Enum):
     """Sex of users"""
+
     M = "Male"
     F = "Female"

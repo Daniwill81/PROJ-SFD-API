@@ -14,37 +14,28 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 
 from fastapi import APIRouter, Depends, Request, status
 
+from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
-from app import controllers
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.query.indicator import IndicatorQuery
-from app.serializers.utils.indicators import IndicatorSerializer
+from app.serializers.utils.indicators import IndicatorSerializer, WriteIndicatorSerializer
 
 router = APIRouter()
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    indicator: Indicator,
+    request: Request,
+    serializer_write: WriteIndicatorSerializer,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
-    """Create a indicator."""
-    sfd = indicator.sfd
-    criteria = indicator.criteria
-    name = indicator.name
-    ratio = indicator.ratio
-    mark = indicator.mark
-    year = indicator.year
-
-    await controllers.indicator.indicator_create(
-        sfd=sfd, criteria=criteria, name=name, ratio=ratio, mark=mark, year=year
-    )
-    instance = indicator
-
+    """Create a criteria."""
+    await serializer_write.run_async_validators(request=request)
+    instance = await serializer_write.create(request=request, request_user=request_user)
     return IndicatorSerializer.read(instance)
 
 
@@ -72,6 +63,8 @@ async def listing(
         qs = query.get_qs().find(**cursor.get_beanie_query_params())
 
     instance_list = await qs.to_list()
+    await prefetch_related(instance_list, to_attribute="sfd")
+    await prefetch_related(instance_list, to_attribute="criteria")
 
     cursor.set_count(await qs.count())
     result: PaginatedData[IndicatorSerializer] = IndicatorSerializer.read_page(

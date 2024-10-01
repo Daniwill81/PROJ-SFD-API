@@ -18,6 +18,7 @@ from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
 from app.models.enums import RoleEnum
+from app.models.sfd.sfd import Sfd
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.rekonData import RekonData
@@ -28,21 +29,25 @@ router = APIRouter()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    rekonDataList: list[RekonData],
+    rekon_data_list: list[RekonData],
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> list[RekonDataSerializer]:
     """Create multiple rekonData."""
-    created_rekonData = []
-    for rekonData in rekonDataList:
-        sfd = rekonData.sfd
-        account_number = rekonData.account_number
-        amount = rekonData.amount
-        year = rekonData.year
+    sfd = await Sfd.get_or_404(rekon_data_list[0].sfd)
 
-        instance = await controllers.rekonData.rekonData_create(sfd=sfd, account_number=account_number, amount=amount, year=year)
-        created_rekonData.append(RekonDataSerializer.read(instance))
+    created_rekon_data = await controllers.rekonData.rekonData_create(
+        rekon_data_list=[
+            {
+                "account_number": data.account_number,
+                "amount": data.amount,
+                "year": data.year,
+            }
+            for data in rekon_data_list
+        ],
+        sfd=sfd,
+    )
 
-    return created_rekonData
+    return [RekonDataSerializer.read(instance) for instance in created_rekon_data]
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)
