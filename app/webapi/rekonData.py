@@ -15,6 +15,7 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 from fastapi import APIRouter, Depends, Request, status
 
 from sap.fastapi.pagination import CursorInfo, PaginatedData
+from sap.beanie.query import prefetch_related
 
 from app import controllers
 from app.models.enums import RoleEnum
@@ -69,9 +70,12 @@ async def listing(
 
     qs = RekonData.find(**cursor.get_beanie_query_params())
 
+    instance_list = await qs.to_list()
+    await prefetch_related(instance_list, to_attribute="sfd")
+
     cursor.set_count(await qs.count())
     result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
-        await qs.to_list(),
+        instance_list,
         request=request,
         cursor_info=cursor,
     )
