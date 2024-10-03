@@ -14,8 +14,8 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 
 from fastapi import APIRouter, Depends, Request, status
 
-from sap.fastapi.pagination import CursorInfo, PaginatedData
 from sap.beanie.query import prefetch_related
+from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
 from app.models.enums import RoleEnum
