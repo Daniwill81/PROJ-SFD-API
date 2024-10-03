@@ -30,10 +30,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "C10",
             "D1E",
             "D1L",
-            "N1A",
-            "N1J",
-            "N3A",
-            "Q1A",
+            "N1A+N1J+N3A+Q1A",
         }
         resource_b_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
 
@@ -86,7 +83,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
     if indicator_name == "limitation des risques pris sur une seule signature":
         resource_a_accounts_number = {"A1X"}
         resource_b_accounts_number = {"F1A", "F2A", "F3A", "F50", "G2A", "G10", "G15", "G35", "G60", "G70", "L01"}
-        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24+D31+D41+D46", "L70", "L80", "A2X", "A3X"}
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
         missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
@@ -123,10 +120,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "A60",
             "B65",
             "C55",
-            "N1A",
-            "N1J",
-            "N2A",
-            "N2J",
+            "N1A+N1J+N2A+N2J",
         }
         resource_b_accounts_number = {
             "F1A",
@@ -145,10 +139,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "H40",
             "F60",
             "G90",
-            "N1H",
-            "N1K",
-            "N2H",
-            "N2M",
+            "N1H+N1K+N2H+N2M",
         }
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
@@ -200,7 +191,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L80",
         }
         resource_b_accounts_number = {"B"}
-        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24+D31+D41+D46", "L70", "L80", "A2X", "A3X"}
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
         missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
@@ -238,7 +229,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24+D31+D41+D46", "L70", "L80", "A2X", "A3X"}
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
         missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
@@ -276,7 +267,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "L75",
             "L80",
         }
-        resource_c_accounts_number = {"L62", "E05", "D24", "D31", "D41", "D46", "L70", "L80", "A2X", "A3X"}
+        resource_c_accounts_number = {"L62", "E05", "D24", "D24+D31+D41+D46", "L70", "L80", "A2X", "A3X"}
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
         missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
@@ -309,10 +300,7 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
             "C10",
             "D1E",
             "D1L",
-            "N1A",
-            "N1J",
-            "N3A",
-            "Q1A",
+            "N1A+N1J+N3A+Q1A",
         }
 
         missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
