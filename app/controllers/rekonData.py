@@ -3,7 +3,7 @@ from app.models import RekonData, Sfd
 
 async def rekon_data_create(
     sfd: Sfd,
-    #name: str,
+    # name: str,
     account_number: str,
     amount: int,
     year: int = 2024,
