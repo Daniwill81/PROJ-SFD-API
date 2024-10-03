@@ -30,7 +30,3 @@ class Indicator(Document):
         """Settings for the database collection."""
 
         name = "indicator"
-        indexes = [
-            # Ensure that there is no duplicate for names
-            pymongo.IndexModel([("name", pymongo.ASCENDING)], unique=True),
-        ]

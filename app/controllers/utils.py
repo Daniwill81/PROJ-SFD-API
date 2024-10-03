@@ -1,7 +1,8 @@
+import typing
 from app.models import Indicator, RekonData
 
 
-def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonData]) -> float:
+def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: list[RekonData]) -> typing.Union[float, int]:
     """
     Calculate the indicator ratio based on the specific indicator and its associated RekonData.
     Returns the calculated ratio, an error message if account numbers are missing, or None if the calculation is not possible.
@@ -45,7 +46,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
-        return ratio
+
+        if ratio <= 200:
+            mark = 5
+        elif 200 < ratio <= 210:
+            mark = 4
+        elif 210 < ratio <= 220:
+            mark = 3
+        elif 220 < ratio <= 230:
+            mark = 2
+        elif 230 < ratio <= 250:
+            mark = 1
+        else:  # ratio > 250
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "couverture des emplois à mlt par des ressources stables":
         resource_a_accounts_number = {"L01", "F2A", "F3F", "F50", "G15", "G2A", "G30", "G35", "G60", "G70"}
@@ -78,7 +93,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
-        return ratio
+
+        if ratio >= 100:
+            mark = 5
+        elif 100 > ratio >= 90:
+            mark = 4
+        elif 90 > ratio >= 80:
+            mark = 3
+        elif 800 > ratio >= 70:
+            mark = 2
+        elif 70 > ratio >= 60:
+            mark = 1
+        else:  # ratio <60
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "limitation des risques pris sur une seule signature":
         resource_a_accounts_number = {"A1X"}
@@ -100,7 +129,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
 
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
-        return ratio
+
+        if ratio <= 10:
+            mark = 5
+        elif 10 < ratio <= 12:
+            mark = 4
+        elif 12 < ratio <= 14:
+            mark = 3
+        elif 14 < ratio <= 16:
+            mark = 2
+        elif 16 < ratio <= 18:
+            mark = 1
+        else:  # ratio > 18
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "norme de liquidité":
         resource_a_accounts_number = {
@@ -153,7 +196,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
-        return ratio
+        
+        if ratio >= 100:
+            mark = 5
+        elif 100 > ratio >= 90:
+            mark = 4
+        elif 90 > ratio >= 80:
+            mark = 3
+        elif 80 > ratio >= 70:
+            mark = 2
+        elif 70 > ratio >= 60:
+            mark = 1
+        else:  # ratio <60
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "la réserve générale":
         resource_a_accounts_number = {"L80"}
@@ -170,7 +227,15 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = resource_a + resource_b
-        return ratio
+        
+        if ratio > 15:
+            mark = 3
+        elif ratio == 15:
+            mark = 2
+        else:  # ratio < 15
+            mark = 1
+
+        return ratio, mark
 
     if indicator_name == "la norme de capitalisation":
         resource_a_accounts_number = {
@@ -208,7 +273,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
 
         deducted = resource_a - resource_c
         ratio = (deducted / resource_b) * 100
-        return ratio
+        
+        if ratio >= 15:
+            mark = 5
+        elif 15 > ratio >= 13:
+            mark = 4
+        elif 13 > ratio >= 11:
+            mark = 3
+        elif 11 > ratio >= 9:
+            mark = 2
+        elif 9 > ratio >= 7:
+            mark = 1
+        else:  # ratio <7
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "la limitation des prises de participation":
         resource_a_accounts_number = {"D1E"}
@@ -246,7 +325,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
 
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
-        return ratio
+        
+        if ratio <= 25:
+            mark = 5
+        elif 25 < ratio <= 27:
+            mark = 4
+        elif 27 < ratio <= 29:
+            mark = 3
+        elif 29 < ratio <= 31:
+            mark = 2
+        elif 31 < ratio <= 33:
+            mark = 1
+        else:  # ratio > 33
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "la limitation des prêts aux dirigeants, au personn ainsi qu'aux personnes liées":
         resource_a_accounts_number = {"A"}
@@ -284,7 +377,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
 
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
-        return ratio
+        
+        if ratio <= 10:
+            mark = 5
+        elif 10 < ratio <= 12:
+            mark = 4
+        elif 12 < ratio <= 14:
+            mark = 3
+        elif 14 < ratio <= 16:
+            mark = 2
+        elif 16 < ratio <= 18:
+            mark = 1
+        else:  # ratio > 18
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "La limitation des opérations autres que l'épargne et le crédit":
         resource_a_accounts_number = {"A"}
@@ -314,7 +421,21 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
         resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
-        return ratio
+        
+        if ratio <= 5:
+            mark = 5
+        elif 5 < ratio <= 6:
+            mark = 4
+        elif 6 < ratio <= 7:
+            mark = 3
+        elif 7 < ratio <= 8:
+            mark = 2
+        elif 8 < ratio <= 10:
+            mark = 1
+        else:  # ratio > 18
+            mark = 0
+        
+        return ratio, mark
 
     if indicator_name == "Le financement des immobilisations et des participants":
         resource_a_accounts_number = {"D24", "D25", "D31", "D36", "D41", "D45", "D46", "D47", "D1E"}
@@ -352,7 +473,20 @@ def calculate_indicator_ratio(indicator: Indicator, rekon_data_list: list[RekonD
 
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
-        return ratio
 
+        if ratio <= 100:
+            mark = 5
+        elif 100 < ratio <= 105:
+            mark = 4
+        elif 105 < ratio <= 110:
+            mark = 3
+        elif 110 < ratio <= 115:
+            mark = 2
+        elif 115 < ratio <= 120:
+            mark = 1
+        else:  # ratio > 120
+            mark = 0
+        
+        return ratio, mark
     # Si aucun indicateur ne correspond
     return None

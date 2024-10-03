@@ -6,10 +6,13 @@ Handle data validation.
 import datetime
 import typing
 
+from beanie import PydanticObjectId
+from pymongo.errors import DuplicateKeyError
+
 from sap.beanie import Link
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
-from app.controllers.utils import calculate_indicator_ratio
+from app.controllers.utils import calculate_indicator_ratio_and_mark
 from app.models import Criteria, Indicator, RekonData, Sfd
 
 
@@ -40,7 +43,7 @@ class WriteIndicatorSerializer(WriteObjectSerializer[Indicator]):
     instance: Indicator | None = None
 
     @staticmethod
-    async def calculate_ratio(indicator: Indicator) -> float:
+    async def calculate_ratio_and_mark(indicator: Indicator) -> typing.Union[float, int]:
         """Calculate the ratio for the given indicator."""
         # Fetch all RekonData for this indicator's SFD and year
         rekon_data_list = await RekonData.find(
@@ -48,7 +51,7 @@ class WriteIndicatorSerializer(WriteObjectSerializer[Indicator]):
         ).to_list()
 
         # Calculate the ratio using the utility function
-        return calculate_indicator_ratio(indicator, rekon_data_list)
+        return calculate_indicator_ratio_and_mark(indicator, rekon_data_list)
 
     async def create(self, **kwargs: typing.Any) -> Indicator:
         """Create the object in the database using the data extracted by the serializer."""
@@ -56,9 +59,10 @@ class WriteIndicatorSerializer(WriteObjectSerializer[Indicator]):
         self.instance = await Indicator(**self.model_dump()).create()
 
         # Calculate and update the ratio if possible
-        calculated_ratio = await self.calculate_ratio(self.instance)
-        if calculated_ratio is not None:
+        calculated_ratio, calculated_mark = await self.calculate_ratio_and_mark(self.instance)
+        if calculated_ratio is not None and calculated_mark is not None:
             self.instance.ratio = calculated_ratio
+            self.instance.mark = calculated_mark
             await self.instance.save()
 
         return self.instance
