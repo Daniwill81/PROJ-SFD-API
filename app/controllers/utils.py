@@ -17,6 +17,7 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
     def calculate_resource(accounts: set[str], rekon_data_list: list[RekonData]) -> int:
         return sum(data.amount for data in rekon_data_list if data.account_number in accounts)
 
+############################## premier critere ####################################
     if indicator_name == "limitation des risques":
         resource_a_accounts_number = {
             "A12",
@@ -488,5 +489,134 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
             mark = 0
         
         return ratio, mark
+    
+
+############################## deuxieme critere ####################################
+    if indicator_name == "taux de provision pour creances en souffrance":
+        resource_a_accounts_number = {"B70"}
+        
+        resource_b_accounts_number = {"B70"}
+
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
+            raise AssertionError(
+                f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'taux de provision pour creances en souffrance': {missing_accounts}"
+            )
+
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
+
+        mark = 0
+        
+        return ratio, mark
+
+
+    if indicator_name == "taux de perte sur creances":
+        resource_a_accounts_number = {"T6K", "T6L"}
+        
+        resource_b_accounts_number = {"B2D", "B2N", "B30", "B40", "B70", "B65"}
+
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        if missing_a or missing_b:
+            missing_accounts = ", ".join(missing_a + missing_b)
+            raise AssertionError(
+                f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'taux de perte sur creances': {missing_accounts}"
+            )
+
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        ratio = (resource_a / resource_b) * 100
+
+        mark = 0
+        
+        return ratio, mark
+
+
+    if indicator_name == "portefeuille classe a risque":
+        resource_a_accounts_number = {"X7B"}
+        resource_b_accounts_number = {"B2D", "B2N", "B30", "B40", "B70"}
+        resource_c_accounts_number = {"B65"}
+
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
+            raise AssertionError(
+                f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'portefeuille classe a risque': {missing_accounts}"
+            )
+
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
+
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
+
+        mark = 0
+        
+        return ratio, mark
+
+
+    if indicator_name == "charge dexploitation rapportees au portefeuille de credits":
+        resource_a_accounts_number = {"R08", "R4B", "R3A", "R5B", "R5E", "R6A", "R6F", "R6V", "R7A", "S02", "S1A", "S2A", "T50", "T51", "T6B", "Z27"}
+        resource_b_accounts_number = {"B2D", "B2N", "B30", "B40", "B70"}
+        resource_c_accounts_number = {"B65"}
+
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c)
+            raise AssertionError(
+                f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'charge dexploitation rapportees au portefeuille de credits': {missing_accounts}"
+            )
+
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
+
+        deducted = resource_b - resource_c
+        ratio = (resource_a / deducted) * 100
+        
+        mark = 0
+        
+        return ratio, mark    
+        
+
+    if indicator_name == "charge dexploitation rapportees au portefeuille de credits":
+        resource_a_accounts_number = {"V08", "V3A", "V4B", "V5B", "V5G", "V6A", "V6F", "V6U", "V7A", "V8A", "W4A", "W50 ", "X50", "X51", "X6B"}
+        resource_b_accounts_number = {"Z27"}
+        resource_c_accounts_number = {"R08", "R3A", "R4B", "R5B", "R5E", "R6A", "R6F", "R6V", "R7A", "S02", "S1A", "S2A ", "T50", "X51", "T6B"}
+        resource_d_accounts_number = {"L01"}
+
+        missing_a = check_accounts_exist(resource_a_accounts_number, rekon_data_list)
+        missing_b = check_accounts_exist(resource_b_accounts_number, rekon_data_list)
+        missing_c = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+        missing_d = check_accounts_exist(resource_c_accounts_number, rekon_data_list)
+
+        if missing_a or missing_b or missing_c:
+            missing_accounts = ", ".join(missing_a + missing_b + missing_c + missing_d)
+            raise AssertionError(
+                f"Erreur: Les numéros de compte suivants sont manquants pour le calcul de l'indicateur 'charge dexploitation rapportees au portefeuille de credits': {missing_accounts}"
+            )
+
+        resource_a = calculate_resource(resource_a_accounts_number, rekon_data_list)
+        resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
+        resource_c = calculate_resource(resource_c_accounts_number, rekon_data_list)
+        resource_d = calculate_resource(resource_d_accounts_number, rekon_data_list)
+
+        deducted = (resource_a - resource_b) - resource_c
+        ratio = (deducted / resource_d) * 100
+
+        mark = 0
+        
+        return ratio, mark
+
     # Si aucun indicateur ne correspond
     return None
+
