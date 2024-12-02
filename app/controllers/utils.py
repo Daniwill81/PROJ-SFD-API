@@ -487,7 +487,7 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
             mark = 1
         else:  # ratio > 120
             mark = 0
-        
+
         return ratio, mark
     
 
@@ -509,7 +509,14 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
 
-        mark = 0
+        if ratio >= 40:
+            mark = 3
+        elif 30 <= ratio < 40:
+            mark = 2
+        elif 25 <= ratio < 30:
+            mark = 1
+        else:  # ratio < 25
+            mark = 0
         
         return ratio, mark
 
@@ -531,7 +538,14 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
         resource_b = calculate_resource(resource_b_accounts_number, rekon_data_list)
         ratio = (resource_a / resource_b) * 100
 
-        mark = 0
+        if ratio < 2:
+            mark = 3
+        elif 2 <= ratio < 4:
+            mark = 2
+        elif 4 <= ratio < 5:
+            mark = 1
+        else:  # ratio >= 5
+            mark = 0
         
         return ratio, mark
 
@@ -557,7 +571,14 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
 
-        mark = 0
+        if ratio >= 5:
+            mark = 3
+        elif 5 < ratio <= 7:
+            mark = 2
+        elif 7 < ratio <= 10:
+            mark = 1
+        else:  # ratio > 10
+            mark = 0
         
         return ratio, mark
 
@@ -583,7 +604,14 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
         deducted = resource_b - resource_c
         ratio = (resource_a / deducted) * 100
         
-        mark = 0
+        if ratio <= 35:
+            mark = 3
+        elif 35 < ratio <= 40:
+            mark = 2
+        elif 40 < ratio <= 45:
+            mark = 1
+        else:  # ratio > 45
+            mark = 0
         
         return ratio, mark    
         
@@ -613,10 +641,19 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
         deducted = (resource_a - resource_b) - resource_c
         ratio = (deducted / resource_d) * 100
 
-        mark = 0
+        if ratio > 15:
+            mark = 3
+        elif 12 < ratio <= 15:
+            mark = 2
+        elif 10 < ratio <= 12:
+            mark = 1
+        else:  # ratio <= 10
+            mark = 0
         
         return ratio, mark
 
-    # Si aucun indicateur ne correspond
-    return None
 
+############################## troisieme critere ####################################
+
+     # Si aucun indicateur ne correspond
+    return None
