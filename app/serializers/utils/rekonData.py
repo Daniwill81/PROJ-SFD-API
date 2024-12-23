@@ -18,6 +18,7 @@ class RekonDataSerializer(ObjectSerializer[RekonData]):
     id: str
     sfd: Link[Sfd]
     account_number: str
+    description: str
     amount: int
     year: int = 2024
     created: datetime.datetime

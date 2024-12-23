@@ -22,21 +22,9 @@ from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.query.indicator import IndicatorQuery
-from app.serializers.utils.indicators import IndicatorSerializer, WriteIndicatorSerializer
+from app.serializers.utils.indicators import IndicatorSerializer
 
 router = APIRouter()
-
-
-@router.post("/", status_code=status.HTTP_201_CREATED)
-async def create(
-    request: Request,
-    serializer_write: WriteIndicatorSerializer,
-    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> IndicatorSerializer:
-    """Create a criteria."""
-    await serializer_write.run_async_validators(request=request)
-    instance = await serializer_write.create(request=request, request_user=request_user)
-    return IndicatorSerializer.read(instance)
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)

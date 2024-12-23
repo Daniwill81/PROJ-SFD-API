@@ -4,8 +4,6 @@ Rekon data.
 It can be a gorvment org or a private org.
 
 """
-import pymongo
-
 from sap.beanie import Document, Link
 
 from app.models.sfd.sfd import Sfd
@@ -20,6 +18,7 @@ class RekonData(Document):
 
     sfd: Link[Sfd]
     account_number: str
+    description: str
     amount: int
     year: int = 2024
 
