@@ -6,9 +6,6 @@ Handle data validation.
 import datetime
 import typing
 
-from beanie import PydanticObjectId
-from pymongo.errors import DuplicateKeyError
-
 from sap.beanie import Link
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 

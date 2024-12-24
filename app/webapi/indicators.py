@@ -33,7 +33,7 @@ async def create(
     serializer_write: WriteIndicatorSerializer,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
-    """Create a criteria."""
+    """Create a indicator."""
     await serializer_write.run_async_validators(request=request)
     instance = await serializer_write.create(request=request, request_user=request_user)
     return IndicatorSerializer.read(instance)

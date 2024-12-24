@@ -36,3 +36,7 @@ xmltodict==0.13.0
 
 # deployment
 supervisor==4.2.5
+
+#Excel file traitment
+pandas==2.2.3
+openpyxl==3.1.5
