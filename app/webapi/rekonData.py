@@ -28,28 +28,6 @@ from app.serializers.utils.rekonData import RekonDataSerializer
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
-async def create(
-    rekon_data_list: list[RekonData],
-    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> list[RekonDataSerializer]:
-    """Create multiple rekonData."""
-    sfd = await Sfd.get_or_404(rekon_data_list[0].sfd)
-
-    created_rekon_data = await controllers.rekonData.upload_rekonData(
-        rekon_data_list=[
-            {
-                "account_number": data.account_number,
-                "amount": data.amount,
-                "year": data.year,
-            }
-            for data in rekon_data_list
-        ],
-        sfd=sfd,
-    )
-
-    return [RekonDataSerializer.read(instance) for instance in created_rekon_data]
-
 @router.post("/upload-file/", status_code=status.HTTP_201_CREATED)
 async def upload_rekon_data(
     upload_file: UploadFile,

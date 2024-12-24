@@ -47,7 +47,7 @@ async def upload_rekonData(upload_file, sfd: Sfd) -> list[RekonData]:
                         })
 
     # Insérer les données dans la collection
-    created_data = []
+    saved_data = []
     for data in donnees_traitees:
         rekon_data = RekonData(
             sfd=sfd,
@@ -56,6 +56,6 @@ async def upload_rekonData(upload_file, sfd: Sfd) -> list[RekonData]:
             amount=data["amount"]
         )
         await rekon_data.save()
-        created_data.append(rekon_data)
+        saved_data.append(rekon_data)
 
-    return created_data
+    return saved_data
