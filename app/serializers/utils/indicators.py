@@ -10,7 +10,7 @@ from sap.beanie import Link
 from sap.fastapi import ObjectSerializer, WriteObjectSerializer
 
 from app.controllers.utils import calculate_indicator_ratio_and_mark
-from app.models import Criteria, Indicator, RekonData, Sfd
+from app.models import Criteria, Indicator, RekonData, ThirdCrekonData, ThirdCrekonData2, Sfd
 
 
 class IndicatorSerializer(ObjectSerializer[Indicator]):
@@ -46,9 +46,15 @@ class WriteIndicatorSerializer(WriteObjectSerializer[Indicator]):
         rekon_data_list = await RekonData.find(
             RekonData.sfd == indicator.sfd, RekonData.year == indicator.year
         ).to_list()
+        third_cri_rekon_data_list_1 = await ThirdCrekonData.find(
+            ThirdCrekonData.sfd == indicator.sfd, ThirdCrekonData.year == indicator.year
+        ).to_list()
+        third_cri_rekon_data_list_2 = await ThirdCrekonData2.find(
+            ThirdCrekonData2.sfd == indicator.sfd, ThirdCrekonData2.year == indicator.year
+        ).to_list()
 
         # Calculate the ratio using the utility function
-        return calculate_indicator_ratio_and_mark(indicator, rekon_data_list)
+        return calculate_indicator_ratio_and_mark(indicator, rekon_data_list, third_cri_rekon_data_list_1, third_cri_rekon_data_list_2)
 
     async def create(self, **kwargs: typing.Any) -> Indicator:
         """Create the object in the database using the data extracted by the serializer."""
