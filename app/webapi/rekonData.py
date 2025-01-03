@@ -12,7 +12,7 @@ The API is structured with  Representational state transfer architecture:
 https://en.wikipedia.org/wiki/Representational_state_transfer
 """
 
-from fastapi import APIRouter, Depends, Request, status, UploadFile, HTTPException
+from fastapi import APIRouter, Depends, Request, status, UploadFile, HTTPException, Query
 
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 from sap.beanie.query import prefetch_related
@@ -31,7 +31,7 @@ router = APIRouter()
 @router.post("/upload-file/", status_code=status.HTTP_201_CREATED)
 async def upload_rekon_data(
     upload_file: UploadFile,
-    sfd: Sfd,
+    sfd: str = Query(..., description="ID du SFD"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> list[RekonDataSerializer]:
 
