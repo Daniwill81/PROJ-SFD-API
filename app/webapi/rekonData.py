@@ -43,7 +43,7 @@ async def upload_rekon_data(
         )
 
     # Appel de la fonction de traitement des données
-    saved_rekon_data = await controllers.allRekonData.upload_rekonData(upload_file.file, sfd)
+    saved_rekon_data = await controllers.rekonData.upload_rekonData(upload_file.file, sfd)
 
     # Conversion en format sérialisé
     return [RekonDataSerializer.read(instance) for instance in saved_rekon_data]

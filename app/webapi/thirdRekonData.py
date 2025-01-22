@@ -43,7 +43,7 @@ async def upload_third_crekondata_file(
         )
 
     # Appel de la fonction de traitement des données
-    saved_rekon_data = await controllers.allRekonData.upload_third_crekondata_file(upload_file.file, sfd)
+    saved_rekon_data = await controllers.rekonData.upload_third_crekondata_file(upload_file.file, sfd)
 
     # Conversion en format sérialisé
     return [ThirdCRekonDataSerializer.read(instance) for instance in saved_rekon_data]
