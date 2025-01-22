@@ -22,18 +22,18 @@ from app.models.enums import RoleEnum
 from app.models.sfd.sfd import Sfd
 from app.models.user.auth import user_auth
 from app.models.user.user import User
-from app.models.utils.rekonData import RekonData
-from app.serializers.utils.rekonData import RekonDataSerializer
+from app.models.utils.thirdCriRekonData import ThirdCrekonData
+from app.serializers.utils.thirdCriRekonData import ThirdCRekonDataSerializer
 
 router = APIRouter()
 
 
 @router.post("/upload-file/", status_code=status.HTTP_201_CREATED)
-async def upload_rekon_data(
+async def upload_third_crekondata_file(
     upload_file: UploadFile,
     sfd: Sfd,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> list[RekonDataSerializer]:
+) -> list[ThirdCRekonDataSerializer]:
 
     # Vérification du type de fichier
     if not upload_file.filename.endswith(".xlsx"):
@@ -43,36 +43,36 @@ async def upload_rekon_data(
         )
 
     # Appel de la fonction de traitement des données
-    saved_rekon_data = await controllers.allRekonData.upload_rekonData(upload_file.file, sfd)
+    saved_rekon_data = await controllers.allRekonData.upload_third_crekondata_file(upload_file.file, sfd)
 
     # Conversion en format sérialisé
-    return [RekonDataSerializer.read(instance) for instance in saved_rekon_data]
+    return [ThirdCRekonDataSerializer.read(instance) for instance in saved_rekon_data]
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)
 async def retrieve(
     pk: str,
-) -> RekonDataSerializer:
+) -> ThirdCRekonDataSerializer:
     """Retrieve a indicator by id."""
-    instance = await RekonData.get_or_404(pk)
-    return RekonDataSerializer.read(instance)
+    instance = await ThirdCrekonData.get_or_404(pk)
+    return ThirdCRekonDataSerializer.read(instance)
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
 async def listing(
     request: Request,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> PaginatedData[RekonDataSerializer]:
+) -> PaginatedData[ThirdCRekonDataSerializer]:
     """Retrieve all sfd."""
     cursor = CursorInfo(request=request)
 
-    qs = RekonData.find(**cursor.get_beanie_query_params())
+    qs = ThirdCrekonData.find(**cursor.get_beanie_query_params())
 
     instance_list = await qs.to_list()
     await prefetch_related(instance_list, to_attribute="sfd")
 
     cursor.set_count(await qs.count())
-    result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
+    result: PaginatedData[ThirdCRekonDataSerializer] = ThirdCRekonDataSerializer.read_page(
         instance_list,
         request=request,
         cursor_info=cursor,

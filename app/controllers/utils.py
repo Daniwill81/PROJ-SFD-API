@@ -1,12 +1,10 @@
 import typing
-from app.models import Indicator, RekonData, ThirdCrekonData, ThirdCrekonData2
+from app.models import Indicator, RekonData
 
 
 def calculate_indicator_ratio_and_mark(
     indicator: Indicator,
     rekon_data_list: list[RekonData],
-    third_cri_rekon_data_list_1: list[ThirdCrekonData],
-    third_cri_rekon_data_list_2: list[ThirdCrekonData2],
 ) -> typing.Union[float, int]:
     """
     Calculate the indicator ratio based on the specific indicator and its associated RekonData.
@@ -18,20 +16,6 @@ def calculate_indicator_ratio_and_mark(
         existing_accounts = set(data.account_number for data in rekon_data_list)
         missing_accounts = [account for account in accounts if account not in existing_accounts]
         return missing_accounts
-
-    def check_years_exist(years: set[str], third_cri_rekon_data_list_1: list[ThirdCrekonData]) -> list[str]:
-        existing_years_n = set(data.n_year for data in third_cri_rekon_data_list_1)
-        existing_years_n_1 = set(data.n_1_year for data in third_cri_rekon_data_list_1)
-        missing_year_n = [year_n for year_n in years if year_n not in existing_years_n]
-        missing_year_n_1 = [years_n_1 for years_n_1 in years if years_n_1 not in existing_years_n_1]
-        return missing_year_n, missing_year_n_1
-    
-    def check_asset_exist(assets: set[str], third_cri_rekon_data_list_2: list[ThirdCrekonData2]) -> list[str]:
-        existing_net_asset = set(data.net_asset for data in third_cri_rekon_data_list_2)
-        existing_total_loan_amount = set(data.total_loan_amount for data in third_cri_rekon_data_list_2)
-        missing_net_assets = [asset for asset in assets if asset not in existing_net_asset]
-        missing_total_loan_amounts = [asset for asset in assets if asset not in existing_total_loan_amount]
-        return missing_net_assets, missing_total_loan_amounts
 
     def calculate_resource(accounts: set[str], rekon_data_list: list[RekonData]) -> int:
         return sum(data.amount for data in rekon_data_list if data.account_number in accounts)

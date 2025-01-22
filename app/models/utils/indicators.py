@@ -4,7 +4,6 @@ Indicators.
 It can be a gorvment fin org or a private fin org.
 
 """
-import pymongo
 
 from sap.beanie import Document, Link
 

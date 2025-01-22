@@ -20,7 +20,9 @@ class ThirdCrekonData(Document):
     criteria: Link[Criteria]
     n_year: int
     n_1_year: int
-    name: str
+    account_number: str
+    total_loan_amount: int
+    net_asset: int
     year: int = 2024
 
     class Settings:

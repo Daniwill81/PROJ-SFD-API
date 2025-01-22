@@ -17,10 +17,10 @@ class ThirdCRekonDataSerializer(ObjectSerializer[ThirdCrekonData]):
     id: str
     sfd: Link[Sfd]
     criteria: Link[Criteria]
-    name: str
     n_year: int
     n_1_year: int
-    ratio: float = 0
-    mark: int = 0
+    account_number: str
+    total_loan_amount: int
+    net_asset: int
     year: int = 2024
     created: datetime.datetime

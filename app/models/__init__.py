@@ -12,7 +12,6 @@ from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.models.utils.rekonData import RekonData
 from app.models.utils.thirdCriRekonData import ThirdCrekonData
-from app.models.utils.thirdCriRekonData2 import ThirdCrekonData2
 
 
 __all__ = [
@@ -25,5 +24,4 @@ __all__ = [
     "Indicator",
     "RekonData",
     "ThirdCrekonData",
-    "ThirdCrekonData2",
 ]
