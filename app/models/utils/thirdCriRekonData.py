@@ -6,7 +6,7 @@ It can be a gorvment org or a private org.
 """
 from sap.beanie import Document, Link
 
-from app.models import Sfd, Criteria
+from app.models import Sfd
 
 
 class ThirdCrekonData(Document):

@@ -8,7 +8,7 @@ import datetime
 from sap.beanie import Link
 from sap.fastapi import ObjectSerializer
 
-from app.models import Criteria, ThirdCrekonData, Sfd
+from app.models import ThirdCrekonData, Sfd
 
 
 class ThirdCRekonDataSerializer(ObjectSerializer[ThirdCrekonData]):
