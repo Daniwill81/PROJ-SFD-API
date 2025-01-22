@@ -5,6 +5,8 @@ It can be a gorvment org or a private org.
 
 """
 from sap.beanie import Document, Link
+from typing import Optional
+from pydantic import Field
 
 from app.models.sfd.sfd import Sfd
 

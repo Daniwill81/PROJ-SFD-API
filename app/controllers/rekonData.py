@@ -33,16 +33,16 @@ async def upload_rekonData(upload_file, sfd: Sfd) -> list[RekonData]:
                     continue
 
                 if pd.notna(code):
-                    description = df[description_col].iloc[i] if description_col is not None else None
+                    description = df[description_col].iloc[i] if description_col is not None else ""
                     valeur_net = sum(
                         df[col].iloc[i] for col in net_cols 
                         if pd.notna(df[col].iloc[i]) and isinstance(df[col].iloc[i], (int, float))
                     )
 
-                    if pd.notna(code) and (description is not None or valeur_net > 0):
+                    if pd.notna(code) and valeur_net > 0:
                         donnees_traitees.append({
                             "account_number": code,
-                            "description": description,
+                            "description": description or "",
                             "amount": int(valeur_net),
                         })
 
