@@ -16,7 +16,6 @@ class ThirdCRekonDataSerializer(ObjectSerializer[ThirdCrekonData]):
 
     id: str
     sfd: Link[Sfd]
-    criteria: Link[Criteria]
     n_year: int
     n_1_year: int
     account_number: str
