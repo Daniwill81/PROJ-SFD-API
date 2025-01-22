@@ -11,6 +11,8 @@ from app.models.sfd.sfd import Sfd
 from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.models.utils.rekonData import RekonData
+from app.models.utils.thirdCriRekonData import ThirdCrekonData
+
 
 __all__ = [
     "User",
@@ -21,4 +23,5 @@ __all__ = [
     "Sfd",
     "Indicator",
     "RekonData",
+    "ThirdCrekonData",
 ]

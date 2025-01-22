@@ -16,6 +16,7 @@ from .indicators import router as router_indicators
 from .rekonData import router as router_rekonData
 from .sfd import router as router_sfd
 from .user import router as router_user
+from .thirdRekonData import router as router_thirdCrekonData
 
 router_api = APIRouter(redirect_slashes=True)
 
@@ -26,3 +27,4 @@ router_api.include_router(router_cotation, prefix="/cotation", tags=["cotation"]
 router_api.include_router(router_indicators, prefix="/indicators", tags=["indicators"])
 router_api.include_router(router_rekonData, prefix="/rekonData", tags=["rekonData"])
 router_api.include_router(router_sfd, prefix="/sfd", tags=["sfd"])
+router_api.include_router(router_thirdCrekonData, prefix="/thirdCrekonData", tags=["thirdCrekonData"])

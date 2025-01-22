@@ -6,10 +6,10 @@ It can be a gorvment org or a private org.
 """
 from sap.beanie import Document, Link
 
-from app.models.sfd.sfd import Sfd
+from app.models import Sfd
 
 
-class RekonData(Document):
+class ThirdCrekonData(Document):
     """
     Represents a ressources for indicators.
 
@@ -17,12 +17,14 @@ class RekonData(Document):
     """
 
     sfd: Link[Sfd]
+    n_year: int
+    n_1_year: int
     account_number: str
-    description: str
-    amount: int
+    total_loan_amount: int
+    net_asset: int
     year: int = 2024
 
     class Settings:
         """Settings for the database collection."""
 
-        name = "rekondata"
+        name = "thirdcrekondata"

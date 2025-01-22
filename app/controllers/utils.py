@@ -2,7 +2,10 @@ import typing
 from app.models import Indicator, RekonData
 
 
-def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: list[RekonData]) -> typing.Union[float, int]:
+def calculate_indicator_ratio_and_mark(
+    indicator: Indicator,
+    rekon_data_list: list[RekonData],
+) -> typing.Union[float, int]:
     """
     Calculate the indicator ratio based on the specific indicator and its associated RekonData.
     Returns the calculated ratio, an error message if account numbers are missing, or None if the calculation is not possible.
@@ -654,6 +657,7 @@ def calculate_indicator_ratio_and_mark(indicator: Indicator, rekon_data_list: li
 
 
 ############################## troisieme critere ####################################
+#    if indicator_name == "Nombre total des déposants":
 
      # Si aucun indicateur ne correspond
     return None
