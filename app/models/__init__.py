@@ -13,7 +13,6 @@ from app.models.utils.indicators import Indicator
 from app.models.utils.rekonData import RekonData
 from app.models.utils.thirdCriRekonData import ThirdCrekonData
 
-
 __all__ = [
     "User",
     "Criteria",

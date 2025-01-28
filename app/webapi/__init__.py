@@ -15,8 +15,8 @@ from .criteria import router as router_criteria
 from .indicators import router as router_indicators
 from .rekonData import router as router_rekonData
 from .sfd import router as router_sfd
-from .user import router as router_user
 from .thirdRekonData import router as router_thirdCrekonData
+from .user import router as router_user
 
 router_api = APIRouter(redirect_slashes=True)
 

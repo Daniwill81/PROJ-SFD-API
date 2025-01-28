@@ -17,26 +17,45 @@ from fastapi import APIRouter, Depends, Request, status
 from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
+from app.controllers.indicator import create_c3_indicators_for_sfd, create_indicators_for_sfd
+from app.models import Sfd, User
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
-from app.models.user.user import User
 from app.models.utils.indicators import Indicator
 from app.query.indicator import IndicatorQuery
-from app.serializers.utils.indicators import IndicatorSerializer, WriteIndicatorSerializer
+from app.serializers.utils.indicators import IndicatorSerializer
 
 router = APIRouter()
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+# Endpoint pour le calcul des indicateurs du critere 1 et 2
+@router.post("/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
 async def create(
-    request: Request,
-    serializer_write: WriteIndicatorSerializer,
+    pk: str,
+    year: int,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> IndicatorSerializer:
-    """Create a indicator."""
-    await serializer_write.run_async_validators(request=request)
-    instance = await serializer_write.create(request=request, request_user=request_user)
-    return IndicatorSerializer.read(instance)
+) -> list[IndicatorSerializer]:
+    """
+    Create indicators for a specific SFD and year.
+    Calculates ratios and marks based on available RekonData.
+    """
+    indicators = await create_indicators_for_sfd(sfd_id=pk, year=year)
+    return [IndicatorSerializer.read(indicator) for indicator in indicators]
+
+
+# Endpoint pour le calcul des indicateurs du critere 3
+@router.post("/third/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
+async def create_third_c_indicator(
+    pk: str,
+    year: int,
+    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
+) -> list[IndicatorSerializer]:
+    """
+    Create indicators for a specific SFD and year.
+    Calculates ratios and marks based on available RekonData.
+    """
+    indicators = await create_c3_indicators_for_sfd(sfd_id=pk, year=year)
+    return [IndicatorSerializer.read(indicator) for indicator in indicators]
 
 
 @router.get("/{pk}/", status_code=status.HTTP_200_OK)

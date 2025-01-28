@@ -12,10 +12,10 @@ The API is structured with  Representational state transfer architecture:
 https://en.wikipedia.org/wiki/Representational_state_transfer
 """
 
-from fastapi import APIRouter, Depends, Request, status, UploadFile, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, UploadFile, status
 
-from sap.fastapi.pagination import CursorInfo, PaginatedData
 from sap.beanie.query import prefetch_related
+from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
 from app.models.enums import RoleEnum
@@ -34,13 +34,9 @@ async def upload_third_crekondata_file(
     sfd: str = Query(..., description="ID du SFD"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> list[ThirdCRekonDataSerializer]:
-
     # Vérification du type de fichier
     if not upload_file.filename.endswith(".xlsx"):
-        raise HTTPException(
-            status_code=400,
-            detail="Le fichier doit être un fichier Excel (.xlsx)."
-        )
+        raise HTTPException(status_code=400, detail="Le fichier doit être un fichier Excel (.xlsx).")
 
     # Appel de la fonction de traitement des données
     saved_rekon_data = await controllers.rekonData.upload_third_crekondata_file(upload_file.file, sfd)

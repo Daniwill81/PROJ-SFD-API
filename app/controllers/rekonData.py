@@ -1,4 +1,5 @@
 import pandas as pd
+
 from app.models import RekonData, Sfd, ThirdCrekonData
 
 
@@ -35,25 +36,25 @@ async def upload_rekonData(upload_file, sfd: Sfd) -> list[RekonData]:
                 if pd.notna(code):
                     description = df[description_col].iloc[i] if description_col is not None else ""
                     valeur_net = sum(
-                        df[col].iloc[i] for col in net_cols 
+                        df[col].iloc[i]
+                        for col in net_cols
                         if pd.notna(df[col].iloc[i]) and isinstance(df[col].iloc[i], (int, float))
                     )
 
                     if pd.notna(code) and valeur_net > 0:
-                        donnees_traitees.append({
-                            "account_number": code,
-                            "description": description or "",
-                            "amount": int(valeur_net),
-                        })
+                        donnees_traitees.append(
+                            {
+                                "account_number": code,
+                                "description": description or "",
+                                "amount": int(valeur_net),
+                            }
+                        )
 
     # Insérer les données dans la collection
     saved_data = []
     for data in donnees_traitees:
         rekon_data = RekonData(
-            sfd=sfd,
-            account_number=data["account_number"],
-            description=data["description"],
-            amount=data["amount"]
+            sfd=sfd, account_number=data["account_number"], description=data["description"], amount=data["amount"]
         )
         await rekon_data.save()
         saved_data.append(rekon_data)
@@ -86,21 +87,23 @@ async def upload_third_crekondata_file(upload_file, sfd: Sfd) -> list[ThirdCreko
 
         if len(col_indices) >= 4:
             col_deposants = col_indices[1]  # La colonne juste après "Y03301"
-            col_annee_n = col_indices[2]    # La colonne Année (n)
-            col_annee_n1 = col_indices[3]   # La colonne Année (n-1)
+            col_annee_n = col_indices[2]  # La colonne Année (n)
+            col_annee_n1 = col_indices[3]  # La colonne Année (n-1)
 
             # Récupérer les valeurs
             annee_n = pd.to_numeric(row_code[col_annee_n].replace(" ", ""), errors="coerce")
             annee_n1 = pd.to_numeric(row_code[col_annee_n1].replace(" ", ""), errors="coerce")
 
             if pd.notna(annee_n) and pd.notna(annee_n1):
-                donnees_traitees.append({
-                    "account_number": "Y03301",
-                    "n_year": int(annee_n),
-                    "n_1_year": int(annee_n1),
-                    "net_asset": 0,
-                    "total_loan_amount": 0
-                })
+                donnees_traitees.append(
+                    {
+                        "account_number": "Y03301",
+                        "n_year": int(annee_n),
+                        "n_1_year": int(annee_n1),
+                        "net_asset": 0,
+                        "total_loan_amount": 0,
+                    }
+                )
 
     # --- Extraction des données "Actif net" et "Montant total des emprunts" ---
     net_asset = 0
@@ -136,7 +139,7 @@ async def upload_third_crekondata_file(upload_file, sfd: Sfd) -> list[ThirdCreko
             n_year=data["n_year"],
             n_1_year=data["n_1_year"],
             net_asset=data["net_asset"],
-            total_loan_amount=data["total_loan_amount"]
+            total_loan_amount=data["total_loan_amount"],
         )
         await third_rekon_data.save()
         saved_data.append(third_rekon_data)
