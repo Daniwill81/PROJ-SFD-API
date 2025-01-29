@@ -14,7 +14,6 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, UploadFile, status
 
-from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
@@ -38,7 +37,7 @@ async def upload_third_crekondata_file(
     if not upload_file.filename.endswith(".xlsx"):
         raise HTTPException(status_code=400, detail="Le fichier doit être un fichier Excel (.xlsx).")
 
-    sfd = Sfd.get_or_404(sfd)
+    sfd = await Sfd.get_or_404(sfd)
     # Appel de la fonction de traitement des données
     saved_rekon_data = await controllers.rekonData.upload_third_crekondata_file(upload_file.file, sfd)
 

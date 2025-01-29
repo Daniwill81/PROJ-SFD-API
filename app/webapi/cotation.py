@@ -37,7 +37,6 @@ async def create(
 
     sfd = await Sfd.get_or_404(sfd)
     criteria = await Criteria.get_or_404(criteria)
-    year = year
 
     # Calculer la somme des marks des indicateurs
     total_mark = await Indicator.get_total_mark_by_sfd_criteria_and_year(sfd=sfd, criteria=criteria, year=year)

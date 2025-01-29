@@ -4,13 +4,11 @@ Serializers.
 Handle data validation.
 """
 import datetime
-import typing
 
 from sap.beanie import Link
-from sap.fastapi import ObjectSerializer, WriteObjectSerializer
+from sap.fastapi import ObjectSerializer
 
-from app.controllers.utils import calculate_indicator_ratio_and_mark
-from app.models import Criteria, Indicator, RekonData, Sfd
+from app.models import Criteria, Indicator, Sfd
 
 
 class IndicatorSerializer(ObjectSerializer[Indicator]):

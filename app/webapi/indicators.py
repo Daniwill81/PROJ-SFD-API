@@ -23,7 +23,7 @@ from app.controllers.indicator import (
     create_c5_indicators_for_sfd,
     create_indicators_for_sfd,
 )
-from app.models import Sfd, User
+from app.models import User
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.utils.indicators import Indicator
@@ -67,7 +67,6 @@ async def create_third_c_indicator(
 @router.post("/fourth/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
 async def create_fourth_c_indicator(
     pk: str,
-    year: int,
     name: str,
     mark: int,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
@@ -76,7 +75,7 @@ async def create_fourth_c_indicator(
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.
     """
-    indicator = await create_c4_indicators_for_sfd(sfd_id=pk, year=year, name=name, mark=mark)
+    indicator = await create_c4_indicators_for_sfd(sfd_id=pk, name=name, mark=mark)
     return IndicatorSerializer.read(indicator)
 
 
@@ -84,7 +83,6 @@ async def create_fourth_c_indicator(
 @router.post("/fifth/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
 async def create_fifth_c_indicator(
     pk: str,
-    year: int,
     name: str,
     mark: int,
     estimation: str,
@@ -94,7 +92,7 @@ async def create_fifth_c_indicator(
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.
     """
-    indicator = await create_c5_indicators_for_sfd(sfd_id=pk, year=year, name=name, mark=mark, estimation=estimation)
+    indicator = await create_c5_indicators_for_sfd(sfd_id=pk, name=name, mark=mark, estimation=estimation)
     return IndicatorSerializer.read(indicator)
 
 

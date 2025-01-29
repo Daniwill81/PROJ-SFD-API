@@ -86,7 +86,6 @@ async def upload_third_crekondata_file(upload_file, sfd: Sfd) -> list[ThirdCreko
         col_indices = row_code[row_code != ""].index.tolist()
 
         if len(col_indices) >= 4:
-            col_deposants = col_indices[1]  # La colonne juste après "Y03301"
             col_annee_n = col_indices[2]  # La colonne Année (n)
             col_annee_n1 = col_indices[3]  # La colonne Année (n-1)
 

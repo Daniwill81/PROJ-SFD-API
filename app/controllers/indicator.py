@@ -168,7 +168,7 @@ async def create_c3_indicators_for_sfd(sfd_id: str, year: int) -> list[Indicator
     return created_indicators
 
 
-async def create_c4_indicators_for_sfd(sfd_id: str, year: int, name: str, mark: int) -> list[Indicator]:
+async def create_c4_indicators_for_sfd(sfd_id: str, name: str, mark: int) -> Indicator:
     # Get the SFD
     sfd = await Sfd.get_or_404(sfd_id)
     print(f"Found SFD: {sfd.id}")  # Debug log
@@ -198,8 +198,8 @@ async def create_c4_indicators_for_sfd(sfd_id: str, year: int, name: str, mark: 
 
 
 async def create_c5_indicators_for_sfd(
-    sfd_id: str, year: int, name: str, mark: int, estimation: str
-) -> list[Indicator]:
+    sfd_id: str, name: str, mark: int, estimation: str
+) -> Indicator:
     # Get the SFD
     sfd = await Sfd.get_or_404(sfd_id)
     print(f"Found SFD: {sfd.id}")  # Debug log
