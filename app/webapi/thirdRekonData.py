@@ -65,9 +65,34 @@ async def listing(
     qs = ThirdCrekonData.find(**cursor.get_beanie_query_params())
 
     instance_list = await qs.to_list()
-    await prefetch_related(instance_list, to_attribute="sfd")
 
     cursor.set_count(await qs.count())
+    result: PaginatedData[ThirdCRekonDataSerializer] = ThirdCRekonDataSerializer.read_page(
+        instance_list,
+        request=request,
+        cursor_info=cursor,
+    )
+    return result
+
+
+@router.get("/{pk}/{year}/", status_code=status.HTTP_200_OK)
+async def get_thirdcrekondata_by_sfd_and_year(
+    pk: str,
+    year: int,
+    request: Request,
+    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
+) -> PaginatedData[ThirdCRekonDataSerializer]:
+    """Récupère les ThirdCrekonData par SFD et année."""
+    sfd = Sfd.get_or_404(pk)
+    cursor = CursorInfo(request=request)
+
+    # Récupération des données filtrées
+    query = ThirdCrekonData.find(ThirdCrekonData.sfd == sfd, ThirdCrekonData.year == year)
+    qs = query.find(**cursor.get_beanie_query_params())
+
+    instance_list = await qs.to_list()
+    cursor.set_count(await qs.count())
+
     result: PaginatedData[ThirdCRekonDataSerializer] = ThirdCRekonDataSerializer.read_page(
         instance_list,
         request=request,

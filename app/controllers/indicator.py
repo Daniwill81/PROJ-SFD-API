@@ -166,3 +166,57 @@ async def create_c3_indicators_for_sfd(sfd_id: str, year: int) -> list[Indicator
             continue
 
     return created_indicators
+
+
+async def create_c4_indicators_for_sfd(sfd_id: str, year: int, name: str, mark: int) -> list[Indicator]:
+    # Get the SFD
+    sfd = await Sfd.get_or_404(sfd_id)
+    print(f"Found SFD: {sfd.id}")  # Debug log
+
+    # Get the "Reporting reglementaire" criteria
+    criteria_4 = await Criteria.find_one({"name": "Reporting reglementaire"})
+    if not criteria_4:
+        raise ValueError("Critère 'Reporting reglementaire' non trouvé dans la base de données")
+
+    print(f"Found criteria: {criteria_4.id}")  # Debug log
+
+    indicator = Indicator(
+        sfd=sfd,
+        criteria=criteria_4,
+        name=name,
+        ratio=0,
+        estimation="Non necessaire pour cet indicateur",
+        mark=mark,
+        year=2024,
+    )
+
+    await indicator.save()
+
+    print(f"Created indicator: {indicator.name} with mark {indicator.mark}")  # Debug log
+
+    return indicator
+
+
+async def create_c5_indicators_for_sfd(
+    sfd_id: str, year: int, name: str, mark: int, estimation: str
+) -> list[Indicator]:
+    # Get the SFD
+    sfd = await Sfd.get_or_404(sfd_id)
+    print(f"Found SFD: {sfd.id}")  # Debug log
+
+    # Get the "Autres critères non financier" criteria
+    criteria_5 = await Criteria.find_one({"name": "Autres critères non financier"})
+    if not criteria_5:
+        raise ValueError("Critère 'Autres critères non financier' non trouvé dans la base de données")
+
+    print(f"Found criteria: {criteria_5.id}")  # Debug log
+
+    indicator = Indicator(sfd=sfd, criteria=criteria_5, name=name, ratio=0, estimation=estimation, mark=mark, year=2024)
+
+    await indicator.save()
+
+    print(
+        f"Created indicator: {indicator.name} with estimation {indicator.estimation} and mark {indicator.mark}"
+    )  # Debug log
+
+    return indicator

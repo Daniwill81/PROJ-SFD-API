@@ -65,9 +65,34 @@ async def listing(
     qs = RekonData.find(**cursor.get_beanie_query_params())
 
     instance_list = await qs.to_list()
-    await prefetch_related(instance_list, to_attribute="sfd")
 
     cursor.set_count(await qs.count())
+    result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
+        instance_list,
+        request=request,
+        cursor_info=cursor,
+    )
+    return result
+
+
+@router.get("/{pk}/{year}/", status_code=status.HTTP_200_OK)
+async def listing_rekondata_by_sfd_and_year(
+    pk: str,
+    year: int,
+    request: Request,
+    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
+) -> PaginatedData[RekonDataSerializer]:
+    """Récupère les RekonData par SFD et année."""
+    sfd = await Sfd.get_or_404(pk)
+    cursor = CursorInfo(request=request)
+
+    # Récupération des données filtrées
+    query = RekonData.find(RekonData.sfd == sfd, RekonData.year == year)
+    qs = query.find(**cursor.get_beanie_query_params())
+
+    instance_list = await qs.to_list()
+    cursor.set_count(await qs.count())
+
     result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
         instance_list,
         request=request,

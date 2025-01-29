@@ -17,7 +17,7 @@ from fastapi import APIRouter, Depends, Request, status
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
-from app.models import Cotation
+from app.models import Cotation, Criteria, Indicator, Sfd
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
 from app.models.user.user import User
@@ -28,17 +28,22 @@ router = APIRouter()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create(
-    cotation: Cotation,
+    sfd: str,
+    criteria: str,
+    year: int,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> CotationSerializer:
     """Create a indicator."""
-    sfd = cotation.sfd
-    criteria = cotation.criteria
-    mark = cotation.mark
-    year = cotation.year
 
-    await controllers.cotation.cotation_create(sfd=sfd, criteria=criteria, mark=mark, year=year)
-    instance = cotation
+    sfd = Sfd.get_or_404(sfd)
+    criteria = Criteria.get_or_404(criteria)
+    year = year
+
+    # Calculer la somme des marks des indicateurs
+    total_mark = await Indicator.get_total_mark_by_sfd_criteria_and_year(sfd=sfd, criteria=criteria, year=year)
+
+    # Créer une nouvelle cotation
+    instance = await controllers.cotation.cotation_create(sfd=sfd, criteria=criteria, mark=total_mark, year=year)
 
     return CotationSerializer.read(instance)
 

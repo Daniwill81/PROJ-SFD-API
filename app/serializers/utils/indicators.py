@@ -21,6 +21,7 @@ class IndicatorSerializer(ObjectSerializer[Indicator]):
     criteria: Link[Criteria]
     name: str
     ratio: float = 0
+    estimation: str = "Non necessaire pour cet indicateur"
     mark: int = 0
     year: int = 2024
     created: datetime.datetime
