@@ -39,4 +39,5 @@ supervisor==4.2.5
 
 #Excel file traitment
 pandas==2.2.3
+pandas-stubs==2.2.3.241126
 openpyxl==3.1.5

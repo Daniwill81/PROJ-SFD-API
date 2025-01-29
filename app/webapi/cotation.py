@@ -35,8 +35,8 @@ async def create(
 ) -> CotationSerializer:
     """Create a indicator."""
 
-    sfd = Sfd.get_or_404(sfd)
-    criteria = Criteria.get_or_404(criteria)
+    sfd = await Sfd.get_or_404(sfd)
+    criteria = await Criteria.get_or_404(criteria)
     year = year
 
     # Calculer la somme des marks des indicateurs

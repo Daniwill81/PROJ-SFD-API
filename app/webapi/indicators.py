@@ -71,7 +71,7 @@ async def create_fourth_c_indicator(
     name: str,
     mark: int,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> list[IndicatorSerializer]:
+) -> IndicatorSerializer:
     """
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.
@@ -89,7 +89,7 @@ async def create_fifth_c_indicator(
     mark: int,
     estimation: str,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> list[IndicatorSerializer]:
+) -> IndicatorSerializer:
     """
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.

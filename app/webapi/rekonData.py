@@ -38,6 +38,7 @@ async def upload_rekon_data(
     if not upload_file.filename.endswith(".xlsx"):
         raise HTTPException(status_code=400, detail="Le fichier doit être un fichier Excel (.xlsx).")
 
+    sfd = await Sfd.get_or_404(sfd)
     # Appel de la fonction de traitement des données
     saved_rekon_data = await controllers.rekonData.upload_rekonData(upload_file.file, sfd)
 
