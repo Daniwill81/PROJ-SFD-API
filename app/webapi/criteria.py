@@ -32,7 +32,7 @@ async def create(
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> CriteriaSerializer:
     """Create a criteria."""
-    await serializer_write.run_async_validators(request=request)
+    # await serializer_write.run_async_validators(request=request)
     instance = await serializer_write.create(request=request, request_user=request_user)
     return CriteriaSerializer.read(instance)
 

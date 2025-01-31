@@ -14,6 +14,7 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, UploadFile, status
 
+from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
@@ -22,6 +23,7 @@ from app.models.sfd.sfd import Sfd
 from app.models.user.auth import user_auth
 from app.models.user.user import User
 from app.models.utils.rekonData import RekonData
+from app.query.rekonData import RekonDataQuery
 from app.serializers.utils.rekonData import RekonDataSerializer
 
 router = APIRouter()
@@ -59,40 +61,19 @@ async def listing(
     request: Request,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> PaginatedData[RekonDataSerializer]:
-    """Retrieve all sfd."""
+    """Retrieve all indicator."""
     cursor = CursorInfo(request=request)
+    query = RekonDataQuery(user=request_user, filters=request.query_params)
 
-    qs = RekonData.find(**cursor.get_beanie_query_params())
+    if search_text := request.query_params.get("q"):
+        qs = query.get_search(search_text)
+    else:
+        qs = query.get_qs().find(**cursor.get_beanie_query_params())
 
     instance_list = await qs.to_list()
+    await prefetch_related(instance_list, to_attribute="sfd")
 
     cursor.set_count(await qs.count())
-    result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
-        instance_list,
-        request=request,
-        cursor_info=cursor,
-    )
-    return result
-
-
-@router.get("/{pk}/{year}/", status_code=status.HTTP_200_OK)
-async def listing_rekondata_by_sfd_and_year(
-    pk: str,
-    year: int,
-    request: Request,
-    request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
-) -> PaginatedData[RekonDataSerializer]:
-    """Récupère les RekonData par SFD et année."""
-    sfd = await Sfd.get_or_404(pk)
-    cursor = CursorInfo(request=request)
-
-    # Récupération des données filtrées
-    query = RekonData.find(RekonData.sfd == sfd, RekonData.year == year)
-    qs = query.find(**cursor.get_beanie_query_params())
-
-    instance_list = await qs.to_list()
-    cursor.set_count(await qs.count())
-
     result: PaginatedData[RekonDataSerializer] = RekonDataSerializer.read_page(
         instance_list,
         request=request,

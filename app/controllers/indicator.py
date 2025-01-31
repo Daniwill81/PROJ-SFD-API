@@ -197,9 +197,7 @@ async def create_c4_indicators_for_sfd(sfd_id: str, name: str, mark: int) -> Ind
     return indicator
 
 
-async def create_c5_indicators_for_sfd(
-    sfd_id: str, name: str, mark: int, estimation: str
-) -> Indicator:
+async def create_c5_indicators_for_sfd(sfd_id: str, name: str, mark: int, estimation: str) -> Indicator:
     # Get the SFD
     sfd = await Sfd.get_or_404(sfd_id)
     print(f"Found SFD: {sfd.id}")  # Debug log

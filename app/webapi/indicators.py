@@ -12,7 +12,7 @@ The API is structured with  Representational state transfer architecture:
 https://en.wikipedia.org/wiki/Representational_state_transfer
 """
 
-from fastapi import APIRouter, Depends, Request, status
+from fastapi import APIRouter, Depends, Query, Request, status
 
 from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
@@ -64,35 +64,35 @@ async def create_third_c_indicator(
 
 
 # Endpoint pour la sauvegarde des indicateurs du critere 4
-@router.post("/fourth/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
+@router.post("/fourth/", status_code=status.HTTP_201_CREATED)
 async def create_fourth_c_indicator(
-    pk: str,
-    name: str,
-    mark: int,
+    sfd: str = Query(..., description="ID du SFD"),
+    name: str = Query(..., description="Nom de l'indicateur"),
+    mark: int = Query(..., description="Année"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
     """
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.
     """
-    indicator = await create_c4_indicators_for_sfd(sfd_id=pk, name=name, mark=mark)
+    indicator = await create_c4_indicators_for_sfd(sfd_id=sfd, name=name, mark=mark)
     return IndicatorSerializer.read(indicator)
 
 
 # Endpoint pour la sauvegarde des indicateurs du critere 5
-@router.post("/fifth/{pk}/{year}/", status_code=status.HTTP_201_CREATED)
+@router.post("/fifth/", status_code=status.HTTP_201_CREATED)
 async def create_fifth_c_indicator(
-    pk: str,
-    name: str,
-    mark: int,
-    estimation: str,
+    sfd: str = Query(..., description="ID du SFD"),
+    name: str = Query(..., description="Nom de l'indicateur"),
+    mark: int = Query(..., description="Année"),
+    estimation: str = Query(..., description="Estimation de l'indicateur"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
     """
     Create indicators for a specific SFD and year.
     Calculates ratios and marks based on available RekonData.
     """
-    indicator = await create_c5_indicators_for_sfd(sfd_id=pk, name=name, mark=mark, estimation=estimation)
+    indicator = await create_c5_indicators_for_sfd(sfd_id=sfd, name=name, mark=mark, estimation=estimation)
     return IndicatorSerializer.read(indicator)
 
 
