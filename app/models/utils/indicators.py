@@ -5,6 +5,8 @@ It can be a gorvment fin org or a private fin org.
 
 """
 
+from bson import ObjectId
+
 from sap.beanie import Document, Link
 
 from app.models.criterias.criteria import Criteria
@@ -26,17 +28,16 @@ class Indicator(Document):
     mark: int = 0
     year: int = 2024
 
-    @classmethod
-    async def get_total_mark_by_sfd_criteria_and_year(cls, sfd: str, criteria: str, year: int) -> int:
-        """
-        Calcule la somme des marks des indicateurs pour un SFD, un critère et une année donnés.
-        """
-        pipeline = [
-            {"$match": {"sfd": sfd, "criteria": criteria, "year": year}},
-            {"$group": {"_id": None, "total_mark": {"$sum": "$mark"}}},
-        ]
-        result = await cls.aggregate(pipeline).to_list()
-        return result[0]["total_mark"] if result else 0
+    # @classmethod
+    # async def get_total_mark_by_sfd_criteria_and_year(cls, sfd: str, criteria: str, year: int) -> int:
+    #  """
+    #   Calcule la somme des marks des indicateurs pour un SFD, un critère et une année donnés.
+    # """
+    #  indicators = await Indicator.find_all().to_list()
+    #   for indicator in indicators:
+    #       total
+
+    #   return
 
     class Settings:
         """Settings for the database collection."""

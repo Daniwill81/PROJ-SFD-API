@@ -5,6 +5,7 @@ Models define logical structuring of the data in the database.
 """
 from app.models.criterias.cotation import Cotation
 from app.models.criterias.criteria import Criteria
+from app.models.criterias.global_note import GlobalNote
 from app.models.sfd.attachment import Attachment
 from app.models.sfd.global_year_result import GlobalYearResult
 from app.models.sfd.sfd import Sfd
@@ -23,4 +24,5 @@ __all__ = [
     "Indicator",
     "RekonData",
     "ThirdCrekonData",
+    "GlobalNote",
 ]

@@ -12,6 +12,7 @@ from fastapi import APIRouter
 from .auth import router as router_auth
 from .cotation import router as router_cotation
 from .criteria import router as router_criteria
+from .global_note import router as router_global_note
 from .indicators import router as router_indicators
 from .rekonData import router as router_rekonData
 from .sfd import router as router_sfd
@@ -28,3 +29,4 @@ router_api.include_router(router_indicators, prefix="/indicators", tags=["indica
 router_api.include_router(router_rekonData, prefix="/rekonData", tags=["rekonData"])
 router_api.include_router(router_sfd, prefix="/sfd", tags=["sfd"])
 router_api.include_router(router_thirdCrekonData, prefix="/thirdCrekonData", tags=["thirdCrekonData"])
+router_api.include_router(router_global_note, prefix="/global-note", tags=["global-note"])

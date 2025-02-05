@@ -68,7 +68,7 @@ async def create_third_c_indicator(
 async def create_fourth_c_indicator(
     sfd: str = Query(..., description="ID du SFD"),
     name: str = Query(..., description="Nom de l'indicateur"),
-    mark: int = Query(..., description="Année"),
+    mark: int = Query(..., description="note"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
     """
@@ -84,7 +84,7 @@ async def create_fourth_c_indicator(
 async def create_fifth_c_indicator(
     sfd: str = Query(..., description="ID du SFD"),
     name: str = Query(..., description="Nom de l'indicateur"),
-    mark: int = Query(..., description="Année"),
+    mark: int = Query(..., description="note"),
     estimation: str = Query(..., description="Estimation de l'indicateur"),
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> IndicatorSerializer:
