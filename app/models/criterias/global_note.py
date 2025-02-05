@@ -6,7 +6,7 @@ It can be a int or another type of data.
 """
 from sap.beanie import Document, Link
 
-from app.models import Sfd
+from app.models.sfd.sfd import Sfd
 
 
 class GlobalNote(Document):
