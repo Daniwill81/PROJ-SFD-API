@@ -20,5 +20,5 @@ class RekonDataSerializer(ObjectSerializer[RekonData]):
     account_number: str
     description: str
     amount: int
-    year: int = 2024
+    year: int = 2023
     created: datetime.datetime

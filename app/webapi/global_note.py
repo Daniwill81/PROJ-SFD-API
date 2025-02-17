@@ -14,12 +14,14 @@ https://en.wikipedia.org/wiki/Representational_state_transfer
 
 from fastapi import APIRouter, Depends, Query, Request, status
 
+from sap.beanie.query import prefetch_related
 from sap.fastapi.pagination import CursorInfo, PaginatedData
 
 from app import controllers
 from app.models import GlobalNote, Sfd, User
 from app.models.enums import RoleEnum
 from app.models.user.auth import user_auth
+from app.query.global_note import GlobalNoteQuery
 from app.serializers.criterias.global_note import GlobalNoteSerializer
 
 router = APIRouter()
@@ -56,14 +58,21 @@ async def listing(
     request: Request,
     request_user: User = Depends(user_auth.require(RoleEnum.get_list_primary())),
 ) -> PaginatedData[GlobalNoteSerializer]:
-    """Retrieve all criteria."""
+    """Retrieve all indicator."""
     cursor = CursorInfo(request=request)
+    query = GlobalNoteQuery(user=request_user, filters=request.query_params)
 
-    qs = GlobalNote.find(**cursor.get_beanie_query_params())
+    if search_text := request.query_params.get("q"):
+        qs = query.get_search(search_text)
+    else:
+        qs = query.get_qs().find(**cursor.get_beanie_query_params())
+
+    instance_list = await qs.to_list()
+    await prefetch_related(instance_list, to_attribute="sfd")
 
     cursor.set_count(await qs.count())
     result: PaginatedData[GlobalNoteSerializer] = GlobalNoteSerializer.read_page(
-        await qs.to_list(),
+        instance_list,
         request=request,
         cursor_info=cursor,
     )

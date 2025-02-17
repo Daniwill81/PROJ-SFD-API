@@ -21,5 +21,5 @@ class IndicatorSerializer(ObjectSerializer[Indicator]):
     ratio: float = 0
     estimation: str = "Non necessaire pour cet indicateur"
     mark: int = 0
-    year: int = 2024
+    year: int = 2023
     created: datetime.datetime

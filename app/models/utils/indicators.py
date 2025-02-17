@@ -26,7 +26,7 @@ class Indicator(Document):
     ratio: float = 0
     estimation: str = "Non necessaire pour cet indicateur"
     mark: int = 0
-    year: int = 2024
+    year: int = 2023
 
     # @classmethod
     # async def get_total_mark_by_sfd_criteria_and_year(cls, sfd: str, criteria: str, year: int) -> int:

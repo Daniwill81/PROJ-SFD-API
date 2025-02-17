@@ -21,5 +21,5 @@ class ThirdCRekonDataSerializer(ObjectSerializer[ThirdCrekonData]):
     account_number: str
     total_loan_amount: int
     net_asset: int
-    year: int = 2024
+    year: int = 2023
     created: datetime.datetime

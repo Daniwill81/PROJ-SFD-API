@@ -187,7 +187,7 @@ async def create_c4_indicators_for_sfd(sfd_id: str, name: str, mark: int) -> Ind
         ratio=0,
         estimation="Non necessaire pour cet indicateur",
         mark=mark,
-        year=2024,
+        year=2023,
     )
 
     await indicator.save()
@@ -209,7 +209,7 @@ async def create_c5_indicators_for_sfd(sfd_id: str, name: str, mark: int, estima
 
     print(f"Found criteria: {criteria_5.id}")  # Debug log
 
-    indicator = Indicator(sfd=sfd, criteria=criteria_5, name=name, ratio=0, estimation=estimation, mark=mark, year=2024)
+    indicator = Indicator(sfd=sfd, criteria=criteria_5, name=name, ratio=0, estimation=estimation, mark=mark, year=2023)
 
     await indicator.save()
 

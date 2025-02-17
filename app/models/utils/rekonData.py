@@ -20,7 +20,7 @@ class RekonData(Document):
     account_number: str
     description: str
     amount: int
-    year: int = 2024
+    year: int = 2023
 
     class Settings:
         """Settings for the database collection."""
